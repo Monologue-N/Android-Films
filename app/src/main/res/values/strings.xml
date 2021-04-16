@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">USC Films</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+    <string name="title_watchlist">Watchlist</string>
+    <string name="_watchlist">Nothing saved to watchlist</string>
+    <string name="_2">2</string>
+    <string name="_1">1</string>
+</resources>
