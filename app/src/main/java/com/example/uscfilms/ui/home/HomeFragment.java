@@ -1,11 +1,14 @@
 package com.example.uscfilms.ui.home;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
@@ -92,11 +95,15 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        // set tab text color (default, selected)
+        tabLayout.setTabTextColors(Color.parseColor("#ffffff"), Color.parseColor("#256eb4") );
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+//                tabLayout.setSelectedTabIndicator(R.color.lake_blue);
+//                int darkBlue = ContextCompat.getColor(getContext(), R.color.dark_blue);
+//                tab.getIcon().setColorFilter(darkBlue, PorterDuff.Mode.SRC_IN);
             }
 
             @Override
