@@ -1,12 +1,16 @@
 package com.example.uscfilms.ui.home;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +28,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.uscfilms.R;
+import com.example.uscfilms.adapter.RecyclerViewDataAdapter;
+import com.example.uscfilms.model.CardList;
+import com.example.uscfilms.model.SingleCard;
+import com.example.uscfilms.service.PopularMovies;
+import com.example.uscfilms.service.TopRatedMovies;
+import com.example.uscfilms.service.VolleyCallback;
 import com.google.gson.JsonArray;
 import com.squareup.picasso.Picasso;
 
@@ -34,12 +44,15 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 
 public class MovieFragment extends Fragment {
     private final static String TAG = "MovieFragment";
     TextView textView;
-    RequestQueue queue;
+    JSONArray arr;
+
+    ArrayList<CardList> allCardLists;
 
     public MovieFragment() {
         // Required empty public constructor
@@ -48,6 +61,51 @@ public class MovieFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        allCardLists = new ArrayList<CardList>();
+    }
+
+    private void createTopRatedMovies(Context cxt, View view) throws JSONException {
+        CardList topRatedMoviesList = new CardList();
+        topRatedMoviesList.setSubtitle("Top-Rated");
+        ArrayList<SingleCard> singleCard = new ArrayList<SingleCard>();
+        TopRatedMovies trm = new TopRatedMovies();
+        trm.getTopRatedMovies(new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONArray res) throws JSONException {
+                for (int i = 0; i < 20; i++) {
+                    String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("backdrop_path");
+                    ImageView image = view.findViewById(R.id.imageView);
+                    Picasso.get().load(String.valueOf(imgURL)).into(image);
+
+                    singleCard.add(new SingleCard("Id " + i, imgURL, res.getJSONObject(i).getString("title")));
+                }
+                topRatedMoviesList.setCardList(singleCard);
+                allCardLists.add(topRatedMoviesList);
+                Log.d(TAG, "cb " + allCardLists);
+            }
+        }, getActivity());
+    }
+
+    private void createPopularMovies(Context cxt, View view) throws JSONException {
+        CardList popularMoviesList = new CardList();
+        popularMoviesList.setSubtitle("Popular");
+        ArrayList<SingleCard> singleCard = new ArrayList<SingleCard>();
+        PopularMovies trm = new PopularMovies();
+        trm.getPopularMovies(new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONArray res) throws JSONException {
+                for (int i = 0; i < 20; i++) {
+                    String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("backdrop_path");
+                    ImageView image = view.findViewById(R.id.imageView);
+                    Picasso.get().load(String.valueOf(imgURL)).into(image);
+
+                    singleCard.add(new SingleCard("Id " + i, imgURL, res.getJSONObject(i).getString("title")));
+                }
+                popularMoviesList.setCardList(singleCard);
+                allCardLists.add(popularMoviesList);
+                Log.d(TAG, "cb " + allCardLists);
+            }
+        }, getActivity());
     }
 
 
@@ -56,52 +114,28 @@ public class MovieFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
-//        textView = (TextView) view.findViewById(R.id.trending_test);
-        queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-//        ImageView image = view.findViewById(R.id.imageView);
 
-//        image.setImageBitmap(null);
+        Context cxt = getActivity();
+        try {
+            createTopRatedMovies(cxt, view);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            createPopularMovies(cxt, view);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        // Instantiate the RequestQueue.
-        String url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts";
+        // dummy data
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.movie_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allCardLists);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
 
-        // Request a string response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        JSONArray array = null;
-                        try {
-                            array = response.getJSONArray("results");
-                            Log.d(TAG, "getJSONArray: " + array);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        for (int i = 0; i < 1; i++) {
-                            try {
-                                JSONObject result = array.getJSONObject(i);
-                                String id = result.getString("id");
-                                String backdrop_path = result.getString("backdrop_path");
-                                String title = result.getString("title");
-                                URL imgURL = new URL("https://image.tmdb.org/t/p/w500" + backdrop_path);
-//                                Picasso.get().load(String.valueOf(imgURL)).into(image);
-                                Log.d(TAG, "onResponse: " + backdrop_path);
-                            } catch (JSONException | MalformedURLException e) {
-                                Log.d(TAG, "JSONObject");
-                                e.printStackTrace();
-                            }
 
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-//                textView.setText("That didn't work!");
 
-            }
-        });
-        queue.add(request);
 
         return view;
 
