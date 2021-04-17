@@ -31,6 +31,7 @@ import com.example.uscfilms.R;
 import com.example.uscfilms.adapter.RecyclerViewDataAdapter;
 import com.example.uscfilms.model.CardList;
 import com.example.uscfilms.model.SingleCard;
+import com.example.uscfilms.service.NowPlayingMovies;
 import com.example.uscfilms.service.PopularMovies;
 import com.example.uscfilms.service.TopRatedMovies;
 import com.example.uscfilms.service.VolleyCallback;
@@ -64,6 +65,21 @@ public class MovieFragment extends Fragment {
         allCardLists = new ArrayList<CardList>();
     }
 
+    private void createNowPlayingMovies(Context cxt, View view) {
+        NowPlayingMovies npm = new NowPlayingMovies();
+        npm.getNowPlayingMovies(new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONArray res) throws JSONException {
+                for (int i = 0; i < 6; i++) {
+                    String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("backdrop_path");
+                    ImageView image = view.findViewById(R.id.imageView);
+                  Picasso.get().load(imgURL).into(image);
+                }
+            }
+        }, cxt);
+    }
+
+
     private void createTopRatedMovies(Context cxt, View view) throws JSONException {
         CardList topRatedMoviesList = new CardList();
         topRatedMoviesList.setSubtitle("Top-Rated");
@@ -74,8 +90,8 @@ public class MovieFragment extends Fragment {
             public void onSuccess(JSONArray res) throws JSONException {
                 for (int i = 0; i < 20; i++) {
                     String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("backdrop_path");
-                    ImageView image = view.findViewById(R.id.imageView);
-                    Picasso.get().load(String.valueOf(imgURL)).into(image);
+//                    ImageView image = view.findViewById(R.id.imageView);
+//                    Picasso.get().load(String.valueOf(imgURL)).into(image);
 
                     singleCard.add(new SingleCard("Id " + i, imgURL, res.getJSONObject(i).getString("title")));
                 }
@@ -83,7 +99,7 @@ public class MovieFragment extends Fragment {
                 allCardLists.add(topRatedMoviesList);
                 Log.d(TAG, "cb " + allCardLists);
             }
-        }, getActivity());
+        }, cxt);
     }
 
     private void createPopularMovies(Context cxt, View view) throws JSONException {
@@ -96,8 +112,8 @@ public class MovieFragment extends Fragment {
             public void onSuccess(JSONArray res) throws JSONException {
                 for (int i = 0; i < 20; i++) {
                     String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("backdrop_path");
-                    ImageView image = view.findViewById(R.id.imageView);
-                    Picasso.get().load(String.valueOf(imgURL)).into(image);
+//                    ImageView image = view.findViewById(R.id.imageView);
+//                    Picasso.get().load(String.valueOf(imgURL)).into(image);
 
                     singleCard.add(new SingleCard("Id " + i, imgURL, res.getJSONObject(i).getString("title")));
                 }
@@ -105,7 +121,7 @@ public class MovieFragment extends Fragment {
                 allCardLists.add(popularMoviesList);
                 Log.d(TAG, "cb " + allCardLists);
             }
-        }, getActivity());
+        }, cxt);
     }
 
 
@@ -116,6 +132,7 @@ public class MovieFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
 
         Context cxt = getActivity();
+        createNowPlayingMovies(cxt, view);
         try {
             createTopRatedMovies(cxt, view);
         } catch (JSONException e) {
