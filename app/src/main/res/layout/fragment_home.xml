@@ -1,29 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
-    <TextView
-        android:id="@+id/trending_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="50sp"
-        android:textColor="@color/white"/>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/trending_img"
-        android:background="@color/white"/>
 
-<!--    <Button-->
-<!--        android:id="@+id/button_parse"-->
-<!--        android:layout_width="wrap_content"-->
+<!--    <com.google.android.material.navigation.NavigationView-->
+<!--        android:id="@+id/home_nav_view"-->
+<!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginBottom="29dp"-->
-<!--        android:text="parse" />-->
+<!--        android:background="@color/dark_blue"-->
+<!--        app:itemIconTint="@android:color/white"-->
+<!--        app:itemTextColor="@android:color/white"-->
+<!--        app:menu="@menu/home_top_nav_menu" />-->
 
-</FrameLayout>
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/home_nav_host_fragment"-->
+<!--        android:name="androidx.navigation.fragment.NavHostFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1"-->
+<!--        app:defaultNavHost="true"-->
+<!--        app:navGraph="@navigation/home_nav_graph" />-->
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_launcher_foreground"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:text="USC Films"
+                android:textColor="@color/white"
+                android:textSize="28dp" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/dark_blue"
+                app:tabTextColor="@color/white">
+
+
+            </com.google.android.material.tabs.TabLayout>
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.viewpager.widget.ViewPager>
+
+
+
+</LinearLayout>
+
+

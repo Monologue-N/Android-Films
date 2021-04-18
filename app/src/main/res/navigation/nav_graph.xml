@@ -8,16 +8,17 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.uscfilms.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="USC Films"
+        android:icon="@drawable/ic_launcher_foreground"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.uscfilms.ui.search.SearchFragment"
-        android:label="@string/title_search"
+        android:label=""
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/navigation_watchlist"
         android:name="com.example.uscfilms.ui.watchlist.WatchlistFragment"
-        android:label="@string/title_watchlist"
+        android:label=""
         tools:layout="@layout/fragment_watchlist" />
 </navigation>
