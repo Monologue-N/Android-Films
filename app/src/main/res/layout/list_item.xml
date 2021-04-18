@@ -26,6 +26,16 @@
         android:textColor="@android:color/white"
         android:textSize="28sp" />
 
+<!--    <Button-->
+<!--        android:id="@+id/btnMore"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="42dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:text="more"-->
+<!--        android:textColor="#FFF" />-->
+
 
 </RelativeLayout>
 
