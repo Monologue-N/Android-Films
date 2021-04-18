@@ -87,7 +87,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onSuccess(JSONArray res) throws JSONException {
                 for (int i = 0; i < 6; i++) {
-                    String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("backdrop_path");
+                    String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("poster_path");
                     sliderDataArrayList.add(new SliderData(imgURL));
                 }
                 // passing this array list inside our adapter class.
@@ -111,8 +111,10 @@ public class MovieFragment extends Fragment {
 
                 // to start autocycle below method is used.
                 sliderView.startAutoCycle();
+                createTopRatedMovies(cxt, view);
 
             }
+
         }, cxt);
 
 
@@ -164,6 +166,7 @@ public class MovieFragment extends Fragment {
                 topRatedMoviesList.setCardList(singleCard);
                 allCardLists.add(topRatedMoviesList);
                 Log.d(TAG, "cb, top-rated " + singleCard);
+                createPopularMovies(cxt, view);
             }
         }, cxt);
 
@@ -212,8 +215,8 @@ public class MovieFragment extends Fragment {
 
         Context cxt = getActivity();
         createNowPlayingMovies(cxt, view);
-        createTopRatedMovies(cxt, view);
-        createPopularMovies(cxt, view);
+
+
 
         return view;
 

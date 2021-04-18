@@ -1,11 +1,14 @@
 package com.example.uscfilms.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.uscfilms.R;
 import com.bumptech.glide.Glide;
 import com.example.uscfilms.model.SliderData;
@@ -13,6 +16,10 @@ import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterViewHolder> {
 
@@ -45,6 +52,14 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
                 .load(sliderItem.getImgUrl())
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);
+
+
+        // .transform(new BlurTransformation(25, 5))
+        Glide.with(viewHolder.itemView)
+                .load(sliderItem.getImgUrl())
+                .fitCenter()
+                .apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 5)))
+                .into(viewHolder.imageViewBackgroundBlur);
     }
 
     // this method will return
@@ -59,10 +74,13 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         // the views of our slider view.
         View itemView;
         ImageView imageViewBackground;
+        ImageView imageViewBackgroundBlur;
 
         public SliderAdapterViewHolder(View itemView) {
             super(itemView);
             imageViewBackground = itemView.findViewById(R.id.myimage);
+            imageViewBackgroundBlur = itemView.findViewById(R.id.myimageBlur);
+
             this.itemView = itemView;
         }
     }
