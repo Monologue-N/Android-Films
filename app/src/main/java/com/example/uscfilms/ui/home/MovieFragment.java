@@ -162,7 +162,7 @@ public class MovieFragment extends Fragment {
 //                    Picasso.get().load(imgURL).into(image);
                     Log.d(TAG, "onSuccess1" + imgURL);
 
-                    singleCard.add(new SingleCard("Id " + i, imgURL, res.getJSONObject(i).getString("title")));
+                    singleCard.add(new SingleCard(res.getJSONObject(i).getString("id"), imgURL, res.getJSONObject(i).getString("title")));
                 }
                 topRatedMoviesList.setCardList(singleCard);
                 allCardLists.add(topRatedMoviesList);
@@ -192,7 +192,7 @@ public class MovieFragment extends Fragment {
 //                    ImageView image = view.findViewById(R.id.imageView);
 //                    Picasso.get().load(imgURL).into(image);
 
-                    singleCard.add(new SingleCard("Id " + i, imgURL, res.getJSONObject(i).getString("title")));
+                    singleCard.add(new SingleCard(res.getJSONObject(i).getString("id"), imgURL, res.getJSONObject(i).getString("title")));
                 }
                 popularMoviesList.setCardList(singleCard);
                 allCardLists.add(popularMoviesList);

@@ -28,6 +28,7 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
     private ArrayList<SingleCard> itemsList;
     private Context mContext;
     final static String TAG = "[SLDA] ";
+    private int idx;
 
     public SectionListDataAdapter(Context context, ArrayList<SingleCard> itemsList) {
         this.itemsList = itemsList;
@@ -45,8 +46,10 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
         SingleCard singleItem = itemsList.get(i);
+        idx = i;
+        Log.d("showidx", String.valueOf(idx));
 
-//        holder.tvTitle.setText(singleItem.getTitle());
+        holder.titleId.setText(singleItem.getId());
         Picasso.get().load(singleItem.getBackdrop_path()).into(holder.itemImage);
 
 
@@ -65,7 +68,7 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
-        protected TextView tvTitle;
+        protected TextView titleId;
 
         protected ImageView itemImage;
 
@@ -73,14 +76,14 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
         public SingleItemRowHolder(View view, int i) {
             super(view);
 
-//            this.tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+            this.titleId = (TextView) view.findViewById(R.id.titleId);
             this.itemImage = (ImageView) view.findViewById(R.id.itemImage);
 
-//            itemImage.bringToFront();
+            itemImage.bringToFront();
 //
-//            itemImage.setClickable(true);
+            itemImage.setClickable(true);
 
-            view.setOnClickListener(new View.OnClickListener() {
+            itemImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d("click", "clicked");
@@ -92,31 +95,48 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 //                            .replace(R.id.movie_fragment, fragment)
 //                            .commit();
 
-                    Fragment mFragment = new DetailsFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("id", itemsList.get(i).getId());
-                    mFragment.setArguments(bundle);
-                    Log.d("hcc", "I am here after arg");
+//                    Fragment mFragment = new DetailsFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("id", itemsList.get(i).getId());
+//                    mFragment.setArguments(bundle);
+//                    Log.d("hcc", "I am here after arg");
 
-                    switchContent(R.id.movie_fragment, mFragment);
+//                    switchContent(R.id.movie_fragment, mFragment);
 
+//                    String id = itemsList.get(i).getId();
+                    String id = (String) titleId.getText();
 
+//                    Log.d("singleItem", String.valueOf(itemsList.get(i)));
+                    Log.d("getId", id);
+                    switchContent(id);
+                    Log.d("itemlist", String.valueOf(i));
                 }
             });
 
-
         }
 
-        public void switchContent(int id, Fragment fragment) {
+        public void switchContent(String id) {
             if (mContext == null)
                 return;
             if (mContext instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) mContext;
-                Fragment frag = fragment;
-                Log.d("hcc", "I am here");
-                mainActivity.switchContent(id, frag);
+//                Fragment frag = fragment;
+//                Log.d("hcc", "I am here");
+                Log.d("getId2", id);
+                mainActivity.switchContent(id, "movie");
             }
         }
+
+//        public void switchContent(int id, Fragment fragment) {
+//            if (mContext == null)
+//                return;
+//            if (mContext instanceof MainActivity) {
+//                MainActivity mainActivity = (MainActivity) mContext;
+//                Fragment frag = fragment;
+//                Log.d("hcc", "I am here");
+//                mainActivity.switchContent(id, frag);
+//            }
+//        }
 
     }
 
