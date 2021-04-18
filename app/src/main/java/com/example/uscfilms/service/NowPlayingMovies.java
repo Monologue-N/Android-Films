@@ -38,6 +38,8 @@ public class NowPlayingMovies {
                         try {
                             arr = response.getJSONArray("results");
                             Log.d(TAG, "getJSONArray: " + arr);
+                            Log.d(TAG, "getResults: " + response);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
