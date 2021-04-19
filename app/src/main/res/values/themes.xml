@@ -18,8 +18,18 @@
     </style>
 
     <style name="SearchViewStyle" parent="ThemeOverlay.AppCompat.Light">
+        <!--change color of text color-->
         <item name="android:textColorPrimary">@color/white</item>
+        <!-- change color of icon-->
         <item name="android:textColorSecondary">@color/white</item>
+        <!-- change color of hint-->
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:queryBackground">@android:color/transparent</item>
+        <item name="android:submitBackground">@android:color/transparent</item>
+
+
+
+
     </style>
 
 <!--    <style name="Theme.USCFilms.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>-->

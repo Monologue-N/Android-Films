@@ -21,11 +21,11 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_bar"
+                android:id="@+id/search_tool_bar"
                 android:layoutDirection="rtl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:queryHint="Search here"
+                shimmer:queryHint="Search movies and TV"
                 shimmer:iconifiedByDefault="false"
                 style="@style/SearchViewStyle"
                 />
