@@ -62,6 +62,7 @@ public class MovieFragment extends Fragment {
     JSONArray arr;
     String dummyURL = "https://image.tmdb.org/t/p/w500/inJjDhCjfhh3RtrJWBmmDqeuSYC.jpg";
     Button button;
+    Context mContext;
 
     ArrayList<CardList> allCardLists;
 
@@ -251,6 +252,21 @@ public class MovieFragment extends Fragment {
         Context cxt = getActivity();
         createNowPlayingMovies(cxt, view);
 //        Toast.makeText(getActivity().getApplicationContext(), "Initialize",  Toast.LENGTH_SHORT).show();
+
+        // make footer clickable
+        TextView footer;
+        footer = view.findViewById(R.id.footer);
+        footer.setClickable(true);
+        // customize footer onClick
+        footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("tmdb", "I clicked");
+                MainActivity mainActivity = (MainActivity) cxt;
+                mainActivity.goToTMDB();
+            }
+        });
+
 
 
         return view;

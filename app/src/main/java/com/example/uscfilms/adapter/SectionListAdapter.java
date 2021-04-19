@@ -144,6 +144,11 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
+                            if (menuItem.getTitle().equals("Open in TMDB")) {
+
+                            }
+
+
                             // Toast message on menu item clicked
                             Toast.makeText(view.getContext(), "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
                             return true;

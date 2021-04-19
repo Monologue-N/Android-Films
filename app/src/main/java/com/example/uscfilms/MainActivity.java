@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -68,4 +69,13 @@ public class MainActivity extends AppCompatActivity {
 //        findViewById(R.id.nav_view).setVisibility(View.VISIBLE);
 //
 //    }
+
+
+    public void goToTMDB() {
+        Log.d("tmdb", "I am here in tmdb");
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org/"));
+        startActivity(i);
+    }
+
+
 }
