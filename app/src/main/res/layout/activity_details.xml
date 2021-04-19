@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsActivity"
-    android:background="@color/dark_blue">
+    android:background="@color/dark_blue"
+    android:orientation="vertical"
+    tools:context=".DetailsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,17 +18,155 @@
             android:orientation="vertical">
 
 
-            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-                android:id="@+id/youtube_player_view"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                    android:id="@+id/youtube_player_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    app:autoPlay="false"
+                    app:showFullScreenButton="true">
+
+                </com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/img_holder"/>
+
+            </RelativeLayout>
+
+
+
+            <TextView
+                android:id="@+id/details_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/lake_blue"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
 
-                app:autoPlay="false"
-                app:showFullScreenButton="true" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/overview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Overview"
+                    android:textColor="@color/lake_blue"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/overviewText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/genres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Genres"
+                    android:textColor="@color/lake_blue"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/genresText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Year"
+                    android:textColor="@color/lake_blue"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/yearText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <ImageView
+                        android:id="@+id/addToWatchlist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_baseline_add_circle_outline_24" />
+
+                    <ImageView
+                        android:id="@+id/fb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        app:srcCompat="@drawable/ic_baseline_facebook_24" />
+
+
+                    <ImageView
+                        android:id="@+id/twitter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
+                        app:srcCompat="@drawable/ic_twitter_logo_dialog" />
+
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/cast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Cast"
+                    android:textColor="@color/lake_blue"
+                    android:textSize="24sp" />
+
+
+                <TextView
+                    android:id="@+id/reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Reviews"
+                    android:textColor="@color/lake_blue"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/recommended"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Recommended Picks"
+                    android:textColor="@color/lake_blue"
+                    android:textSize="24sp" />
+
+
+            </LinearLayout>
 
 
         </LinearLayout>
-
 
 
     </ScrollView>
