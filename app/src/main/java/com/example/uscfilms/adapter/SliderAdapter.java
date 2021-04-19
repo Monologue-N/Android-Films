@@ -69,7 +69,6 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         viewHolder.textView.setText(sliderItem.getId());
         viewHolder.textViewType.setText(sliderItem.getType());
 
-
     }
 
     // this method will return

@@ -150,8 +150,15 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
+                            String id = (String) titleId.getText();
+                            String type = (String) titleType.getText();
                             if (menuItem.getTitle().equals("Open in TMDB")) {
-
+                                if (mContext == null)
+                                    return false;
+                                if (mContext instanceof MainActivity) {
+                                    MainActivity mainActivity = (MainActivity) mContext;
+                                    mainActivity.goToTMDBWithId(id, type);
+                                }
                             }
 
 
@@ -173,8 +180,6 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                 return;
             if (mContext instanceof MainActivity) {
                 MainActivity mainActivity = (MainActivity) mContext;
-//                Fragment frag = fragment;
-//                Log.d("hcc", "I am here");
                 Log.d("getId2", id);
                 Log.d("getId2", "type: " + type);
                 mainActivity.switchContent(id, type);

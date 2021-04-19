@@ -77,5 +77,23 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void goToTMDBWithId(String id, String type) {
+        Log.d("tmdb", "I am here in tmdbWithId");
+        String url = "https://www.themoviedb.org/" + type + "/" + id;
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(i);
+    }
+
+    public void goToFB(String id, String type) {
+        Log.d("tmdb", "I am here in fb");
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com"));
+        startActivity(i);
+    }
+    public void goToTwitter(String id, String type) {
+        Log.d("tmdb", "I am here in twitter");
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.twitter.com"));
+        startActivity(i);
+    }
+
 
 }

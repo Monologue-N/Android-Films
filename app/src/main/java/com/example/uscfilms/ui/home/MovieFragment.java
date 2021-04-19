@@ -163,7 +163,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onSuccess(JSONArray res) throws JSONException {
                 for (int i = 0; i < 20; i++) {
-                    String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("backdrop_path");
+                    String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("poster_path");
 //                    ImageView image = view.findViewById(R.id.imageView);
 //                    Picasso.get().load(imgURL).into(image);
                     Log.d(TAG, "onSuccess1" + imgURL);
@@ -194,7 +194,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onSuccess(JSONArray res) throws JSONException {
                 for (int i = 0; i < 20; i++) {
-                    String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("backdrop_path");
+                    String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("poster_path");
 //                    ImageView image = view.findViewById(R.id.imageView);
 //                    Picasso.get().load(imgURL).into(image);
 
