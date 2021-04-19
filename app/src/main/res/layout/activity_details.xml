@@ -65,7 +65,7 @@
                     android:textColor="@color/lake_blue"
                     android:textSize="24sp" />
 
-                <TextView
+                <com.borjabravo.readmoretextview.ReadMoreTextView
                     android:id="@+id/overviewText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,11 +50,11 @@ public class DetailsActivity extends AppCompatActivity {
                 backdrop_url = "https://image.tmdb.org/t/p/w500" + res.getString("backdrop_path");
                 if (type.equals("movie")) {
                     title = res.getString("title");
-                    year = res.getString("release_date");
+                    year = String.valueOf(Integer.parseInt(res.getString("release_date").substring(0, 4)));
                 }
                 else {
                     title = res.getString("name");
-                    year = res.getString("first_air_date");
+                    year = String.valueOf(Integer.parseInt(res.getString("first_air_date").substring(0, 4)));
                 }
                 overview = res.getString("overview");
 
@@ -131,6 +132,8 @@ public class DetailsActivity extends AppCompatActivity {
                                 }
                             }
                         }
+                    }
+                }
 //                    if (key == null) {
 //                        key = "tzkWB85ULJY";
 //                    }
@@ -148,11 +151,15 @@ public class DetailsActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
+                            YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
+                            youTubePlayerView.setVisibility(View.GONE);
                             ImageView imgHolder = findViewById(R.id.img_holder);
                             Picasso.get().load(backdrop_url).into(imgHolder);
+                            Log.d("novideo", "url: " + backdrop_url);
+                            imgHolder.bringToFront();
                         }
-                    }
-                }
+
+
             }
         }, cxt, id, type);
     }
