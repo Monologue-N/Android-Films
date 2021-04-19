@@ -57,6 +57,7 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
         Log.d("showidx", String.valueOf(idx));
 
         holder.titleId.setText(singleItem.getId());
+        holder.titleType.setText(singleItem.getType());
         Picasso.get().load(singleItem.getBackdrop_path()).into(holder.itemImage);
         holder.itemImageMask.setBackground(Drawable.createFromPath("@drawable/gradient"));
         holder.itemImageMask.bringToFront();
@@ -80,6 +81,8 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 
         protected TextView titleId;
 
+        protected TextView titleType;
+
         protected ImageView itemImage;
 
         protected ImageView itemImageMask;
@@ -93,6 +96,7 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
             this.titleId = (TextView) view.findViewById(R.id.titleId);
             this.itemImage = (ImageView) view.findViewById(R.id.itemImage);
             this.itemImageMask = view.findViewById(R.id.itemImageMask);
+            this.titleType = view.findViewById(R.id.titleType);
 
             itemImage.bringToFront();
 //
@@ -120,10 +124,12 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 
 //                    String id = itemsList.get(i).getId();
                     String id = (String) titleId.getText();
+                    String type = (String) titleType.getText();
 
 //                    Log.d("singleItem", String.valueOf(itemsList.get(i)));
                     Log.d("getId", id);
-                    switchContent(id);
+                    Log.d("getId", "type: " + type);
+                    switchContent(id, type);
                     Log.d("itemlist", String.valueOf(i));
                 }
             });
@@ -162,7 +168,7 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 
         }
 
-        public void switchContent(String id) {
+        public void switchContent(String id, String type) {
             if (mContext == null)
                 return;
             if (mContext instanceof MainActivity) {
@@ -170,7 +176,8 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 //                Fragment frag = fragment;
 //                Log.d("hcc", "I am here");
                 Log.d("getId2", id);
-                mainActivity.switchContent(id, "movie");
+                Log.d("getId2", "type: " + type);
+                mainActivity.switchContent(id, type);
             }
         }
 

@@ -95,7 +95,7 @@ public class MovieFragment extends Fragment {
             public void onSuccess(JSONArray res) throws JSONException {
                 for (int i = 0; i < 6; i++) {
                     String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("poster_path");
-                    sliderDataArrayList.add(new SliderData(imgURL));
+                    sliderDataArrayList.add(new SliderData(imgURL, res.getJSONObject(i).getString("id"), "movie"));
                 }
                 // passing this array list inside our adapter class.
                 SliderAdapter adapter = new SliderAdapter(cxt, sliderDataArrayList);
@@ -168,7 +168,7 @@ public class MovieFragment extends Fragment {
 //                    Picasso.get().load(imgURL).into(image);
                     Log.d(TAG, "onSuccess1" + imgURL);
 
-                    singleCard.add(new SingleCard(res.getJSONObject(i).getString("id"), imgURL, res.getJSONObject(i).getString("title")));
+                    singleCard.add(new SingleCard(res.getJSONObject(i).getString("id"), imgURL, res.getJSONObject(i).getString("title"), "movie"));
                 }
                 topRatedMoviesList.setCardList(singleCard);
                 allCardLists.add(topRatedMoviesList);
@@ -198,7 +198,7 @@ public class MovieFragment extends Fragment {
 //                    ImageView image = view.findViewById(R.id.imageView);
 //                    Picasso.get().load(imgURL).into(image);
 
-                    singleCard.add(new SingleCard(res.getJSONObject(i).getString("id"), imgURL, res.getJSONObject(i).getString("title")));
+                    singleCard.add(new SingleCard(res.getJSONObject(i).getString("id"), imgURL, res.getJSONObject(i).getString("title"), "movie"));
                 }
                 popularMoviesList.setCardList(singleCard);
                 allCardLists.add(popularMoviesList);
@@ -266,8 +266,6 @@ public class MovieFragment extends Fragment {
                 mainActivity.goToTMDB();
             }
         });
-
-
 
         return view;
 

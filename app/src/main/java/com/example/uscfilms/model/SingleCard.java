@@ -4,14 +4,16 @@ public class SingleCard {
     private String id;
     private String backdrop_path;
     private String title;
+    private String type;
 
     public SingleCard() {
     }
 
-    public SingleCard(String id, String backdrop_path, String title) {
+    public SingleCard(String id, String backdrop_path, String title, String type) {
         this.id = id;
         this.backdrop_path = backdrop_path;
         this.title = title;
+        this.type = type;
     }
 
     public String getId() {
@@ -36,5 +38,13 @@ public class SingleCard {
 
     public void setTitle() {
         this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
