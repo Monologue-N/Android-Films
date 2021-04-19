@@ -14,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.uscfilms.MainActivity;
 import com.example.uscfilms.R;
 import com.example.uscfilms.adapter.RecyclerViewDataAdapter;
 import com.example.uscfilms.adapter.SliderAdapter;
@@ -57,6 +61,7 @@ public class MovieFragment extends Fragment {
     TextView textView;
     JSONArray arr;
     String dummyURL = "https://image.tmdb.org/t/p/w500/inJjDhCjfhh3RtrJWBmmDqeuSYC.jpg";
+    Button button;
 
     ArrayList<CardList> allCardLists;
 
@@ -203,9 +208,38 @@ public class MovieFragment extends Fragment {
                 RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getContext(), allCardLists);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                 recyclerView.setAdapter(adapter);
+
             }
         }, cxt);
     }
+
+
+//    private void popupBtnListener(Context cxt, View view) {
+//        // Referencing and Initializing the button
+//        button = (Button) view.findViewById(R.id.clickBtn);
+//
+//        // Setting onClick behavior to the button
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Initializing the popup menu and giving the reference as current context
+//                PopupMenu popupMenu = new PopupMenu(cxt, button);
+//
+//                // Inflating popup menu from popup_menu.xml file
+//                popupMenu.getMenuInflater().inflate(R.menu.pop_up_menu, popupMenu.getMenu());
+//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem menuItem) {
+//                        // Toast message on menu item clicked
+//                        Toast.makeText(cxt, "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    }
+//                });
+//                // Showing the popup menu
+//                popupMenu.show();
+//            }
+//        });
+//    }
 
 
     @Override
@@ -216,7 +250,6 @@ public class MovieFragment extends Fragment {
 
         Context cxt = getActivity();
         createNowPlayingMovies(cxt, view);
-
 //        Toast.makeText(getActivity().getApplicationContext(), "Initialize",  Toast.LENGTH_SHORT).show();
 
 

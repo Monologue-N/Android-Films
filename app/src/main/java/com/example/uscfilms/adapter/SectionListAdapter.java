@@ -1,12 +1,17 @@
 package com.example.uscfilms.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,11 +20,13 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.uscfilms.MainActivity;
 import com.example.uscfilms.R;
 import com.example.uscfilms.model.SingleCard;
 import com.example.uscfilms.ui.details.DetailsFragment;
 import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 
@@ -51,7 +58,10 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 
         holder.titleId.setText(singleItem.getId());
         Picasso.get().load(singleItem.getBackdrop_path()).into(holder.itemImage);
+        holder.itemImageMask.setBackground(Drawable.createFromPath("@drawable/gradient"));
+        holder.itemImageMask.bringToFront();
 
+//        Glide.with(mContext).load(singleItem.getBackdrop_path()).into(new GlideDrawableViewBackgroundTarget(holder.itemImage));
 
        /* Glide.with(mContext)
                 .load(feedItem.getImageURL())
@@ -72,12 +82,17 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 
         protected ImageView itemImage;
 
+        protected ImageView itemImageMask;
+
+        protected Button button;
+
 
         public SingleItemRowHolder(View view, int i) {
             super(view);
 
             this.titleId = (TextView) view.findViewById(R.id.titleId);
             this.itemImage = (ImageView) view.findViewById(R.id.itemImage);
+            this.itemImageMask = view.findViewById(R.id.itemImageMask);
 
             itemImage.bringToFront();
 //
@@ -113,6 +128,33 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                 }
             });
 
+
+            // Referencing and Initializing the button
+            button = (Button) view.findViewById(R.id.clickBtn);
+
+            // Setting onClick behavior to the button
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Initializing the popup menu and giving the reference as current context
+                    PopupMenu popupMenu = new PopupMenu(view.getContext(), button);
+
+                    // Inflating popup menu from popup_menu.xml file
+                    popupMenu.getMenuInflater().inflate(R.menu.pop_up_menu, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            // Toast message on menu item clicked
+                            Toast.makeText(view.getContext(), "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
+                    // Showing the popup menu
+                    popupMenu.show();
+                }
+            });
+
+
         }
 
         public void switchContent(String id) {
@@ -126,6 +168,9 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                 mainActivity.switchContent(id, "movie");
             }
         }
+
+
+
 
 //        public void switchContent(int id, Fragment fragment) {
 //            if (mContext == null)
