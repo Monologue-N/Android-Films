@@ -12,7 +12,8 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         app:civ_border_width="2dp"
-        app:civ_border_color="@android:color/transparent"/>
+        app:civ_border_color="@android:color/transparent"
+        android:layout_gravity="center"/>
 
 
     <TextView
@@ -20,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:gravity="center"/>
 
 
 </LinearLayout>
