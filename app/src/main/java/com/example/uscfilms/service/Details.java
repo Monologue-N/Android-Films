@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 
 public class Details {
     private final static String TAG = "[Details] ";
@@ -96,7 +97,7 @@ public class Details {
                         }
                         try {
                             cb.onSuccess(arr);
-                        } catch (JSONException e) {
+                        } catch (JSONException | ParseException e) {
                             e.printStackTrace();
                         }
                     }
@@ -142,7 +143,52 @@ public class Details {
                         }
                         try {
                             cb.onSuccess(arr);
+                        } catch (JSONException | ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+
+            }
+        });
+        queue.add(request);
+    }
+
+    public void getReviews(final VolleyCallback cb, Context cxt, String id, String type) {
+        queue = Volley.newRequestQueue(cxt.getApplicationContext());
+
+        this.type = type;
+        Log.d("getId5", id);
+        Log.d("getType5", type);
+
+        String url;
+
+        if (type.equals("movie")) {
+            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/movieReviews/" + id;
+        }
+        else {
+            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/tvshowReviews/" + id;
+        }
+        Log.d("searchid", id);
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        arr = null;
+                        try {
+                            arr = response.getJSONArray("results");
+                            Log.d(TAG, "getReviews: " + arr);
                         } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            cb.onSuccess(arr);
+                        } catch (JSONException | ParseException e) {
                             e.printStackTrace();
                         }
                     }

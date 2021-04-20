@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 
 public class NowPlayingMovies {
     private final static String TAG = "[NowPlayingMovies] ";
@@ -59,7 +60,7 @@ public class NowPlayingMovies {
                         }
                         try {
                             cb.onSuccess(arr);
-                        } catch (JSONException e) {
+                        } catch (JSONException | ParseException e) {
                             e.printStackTrace();
                         }
                     }

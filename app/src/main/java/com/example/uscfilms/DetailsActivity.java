@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ import android.widget.TextView;
 
 import com.example.uscfilms.adapter.CastAdapter;
 import com.example.uscfilms.adapter.RecyclerViewDataAdapter;
+import com.example.uscfilms.adapter.ReviewsAdapter;
 import com.example.uscfilms.model.SingleCast;
+import com.example.uscfilms.model.SingleReview;
 import com.example.uscfilms.service.Details;
 import com.example.uscfilms.service.VolleyCallback;
 import com.example.uscfilms.service.VolleyCallback2;
@@ -30,7 +33,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class DetailsActivity extends AppCompatActivity {
     private String key;
@@ -192,10 +203,61 @@ public class DetailsActivity extends AppCompatActivity {
                 int numberOfColumns = 3;
                 recyclerView.setLayoutManager(new GridLayoutManager(cxt, numberOfColumns));
                 recyclerView.setAdapter(adapter);
+
+                getReviews(cxt, id, type);
+
             }
         }, cxt, id, type);
     }
 
+
+    public void getReviews(Context cxt, String id, String type) {
+        Log.d("reviews", ": getReviews creation" );
+
+        Details details = new Details();
+        ArrayList<SingleReview> reviewList = new ArrayList<SingleReview>();
+        details.getReviews(new VolleyCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onSuccess(JSONArray res) throws JSONException, ParseException {
+                for (int i = 0; i < 3; i++) {
+                    Log.d("reviews", "res: " + res);
+
+                    if (res.getJSONObject(i) != null) {
+                        JSONObject obj = res.getJSONObject(i);
+                        String author = obj.getString("author");
+                        String created_at = obj.getString("created_at");
+                        // parse String to date
+                        String ISO_86_24H_FULL_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+                        SimpleDateFormat formatter = new SimpleDateFormat(ISO_86_24H_FULL_FORMAT);
+                        Date date = formatter.parse(created_at);
+                        // format date
+                        DateFormat df = new SimpleDateFormat("E, MMM dd yyyy");
+                        created_at = df.format(date);
+
+
+                        String rating = obj.getJSONObject("author_details").getString("rating");
+                        rating = Integer.toString(Integer.parseInt(rating) / 2) + "/5";
+
+                        String content = obj.getString("content");
+
+                        String creation = "by " + author + " on " + created_at;
+
+                        Log.d("reviews", ": " + created_at);
+                        Log.d("reviews", ": " + author);
+                        Log.d("reviews", ": " + rating);
+
+                        reviewList.add(new SingleReview(creation, rating, content));
+                    }
+                }
+                RecyclerView recyclerView = findViewById(R.id.reviews_recycler_view);
+                recyclerView.setHasFixedSize(true);
+                ReviewsAdapter adapter = new ReviewsAdapter(cxt, reviewList);
+                recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.VERTICAL, false));
+                recyclerView.setAdapter(adapter);
+            }
+        }, cxt, id, type);
+    }
 
 
 
