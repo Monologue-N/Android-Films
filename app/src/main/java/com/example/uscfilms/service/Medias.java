@@ -18,17 +18,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 
-public class NowPlayingMovies {
-    private final static String TAG = "[NowPlayingMovies] ";
+public class Medias {
+    private final static String TAG = "[Medias] ";
     RequestQueue queue;
     JSONArray arr;
 
 
-    public void getNowPlayingMovies(final VolleyCallback cb, Context cxt) {
+    public void getMedia(final VolleyCallback cb, Context cxt, String type, String category) {
         queue = Volley.newRequestQueue(cxt.getApplicationContext());
-
-        // Instantiate the RequestQueue.
-        String url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts";
+        String root = "https://mono-hw9-backend.uk.r.appspot.com/apis/posts/";
+        String url = root + type + "/" + category;
 
         // Request a string response from the provided URL.
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -39,24 +38,8 @@ public class NowPlayingMovies {
                         try {
                             arr = response.getJSONArray("results");
                             Log.d(TAG, "getJSONArray: " + arr);
-
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
-                        for (int i = 0; i < 6; i++) {
-                            try {
-                                JSONObject res = arr.getJSONObject(i);
-                                String id = res.getString("id");
-                                String backdrop_path = res.getString("backdrop_path");
-                                String title = res.getString("title");
-                                URL imgURL = new URL("https://image.tmdb.org/t/p/w500" + backdrop_path);
-//                               Picasso.get().load(String.valueOf(imgURL)).into(image);
-                                Log.d(TAG, "onResponse: " + backdrop_path);
-                            } catch (JSONException | MalformedURLException e) {
-                                Log.d(TAG, "JSONObject");
-                                e.printStackTrace();
-                            }
-
                         }
                         try {
                             cb.onSuccess(arr);
@@ -72,6 +55,6 @@ public class NowPlayingMovies {
             }
         });
         queue.add(request);
-        Log.d(TAG, "JSONArr" + arr);
     }
+
 }

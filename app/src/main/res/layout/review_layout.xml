@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/review_creation"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="TextView"
@@ -19,14 +19,14 @@
 
         <TextView
             android:id="@+id/review_rating"
-            android:layout_width="match_parent"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
             android:textColor="@color/white"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="&#9733;"
@@ -42,9 +42,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="18sp"
-        app:trimMode="trimModeLength"
-        app:trimLines="100"
-        app:colorClickableText="@color/grey"/>
+        app:trimMode="trimModeLine"
+        app:trimLines="4"
+        app:colorClickableText="@color/grey"
+        app:trimExpandedText="..." />
 
 </LinearLayout>

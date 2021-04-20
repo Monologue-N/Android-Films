@@ -52,7 +52,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical">
@@ -73,7 +73,7 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:trimMode="trimModeLength"
-                    app:trimLines="100"
+                    app:trimLength="150"
                     app:colorClickableText="@color/grey"/>
 
                 <TextView
@@ -189,9 +189,10 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recommended_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"/>
 
 
             </LinearLayout>

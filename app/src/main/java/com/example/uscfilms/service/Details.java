@@ -22,22 +22,11 @@ public class Details {
     private final static String TAG = "[Details] ";
     RequestQueue queue;
     JSONObject res;
-    JSONArray arr;
-    String type;
 
-
-    public void getDetails(final VolleyCallback2 cb, Context cxt, String id, String type) {
+    public void getDetails(final VolleyCallback2 cb, Context cxt, String id, String type, String category) {
         queue = Volley.newRequestQueue(cxt.getApplicationContext());
-        this.type = type;
-
-        String url;
-
-        if (type.equals("movie")) {
-            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/movieDetails/" + id;
-        }
-        else {
-            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/tvDetails/" + id;
-        }
+        String root = "https://mono-hw9-backend.uk.r.appspot.com/apis/posts/";
+        String url = root + type + "/" + category + "/" + id;
 
         // Request a string response from the provided URL.
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -50,53 +39,6 @@ public class Details {
 
                         try {
                             cb.onSuccess(res);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-
-            }
-        });
-        queue.add(request);
-        Log.d(TAG, "JSONObject" + res);
-    }
-
-
-    public void getVideos(final VolleyCallback cb, Context cxt, String id, String type) {
-        queue = Volley.newRequestQueue(cxt.getApplicationContext());
-
-        this.type = type;
-        Log.d("getId3", id);
-        Log.d("getType3", type);
-
-        String url;
-
-        if (type.equals("movie")) {
-            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/movieVideos/" + id;
-        }
-        else {
-            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/tvVideos/" + id;
-        }
-        Log.d("searchid", id);
-
-        // Request a string response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        arr = null;
-                        try {
-                            arr = response.getJSONArray("results");
-                            Log.d(TAG, "getVideos: " + arr);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            cb.onSuccess(arr);
                         } catch (JSONException | ParseException e) {
                             e.printStackTrace();
                         }
@@ -110,98 +52,5 @@ public class Details {
         });
         queue.add(request);
     }
-
-
-    public void getCast(final VolleyCallback cb, Context cxt, String id, String type) {
-        queue = Volley.newRequestQueue(cxt.getApplicationContext());
-
-        this.type = type;
-        Log.d("getId4", id);
-        Log.d("getType4", type);
-
-        String url;
-
-        if (type.equals("movie")) {
-            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/movieCast/" + id;
-        }
-        else {
-            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/tvshowCast/" + id;
-        }
-        Log.d("searchid", id);
-
-        // Request a string response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        arr = null;
-                        try {
-                            arr = response.getJSONArray("cast");
-                            Log.d(TAG, "getCasts: " + arr);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            cb.onSuccess(arr);
-                        } catch (JSONException | ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-
-            }
-        });
-        queue.add(request);
-    }
-
-    public void getReviews(final VolleyCallback cb, Context cxt, String id, String type) {
-        queue = Volley.newRequestQueue(cxt.getApplicationContext());
-
-        this.type = type;
-        Log.d("getId5", id);
-        Log.d("getType5", type);
-
-        String url;
-
-        if (type.equals("movie")) {
-            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/movieReviews/" + id;
-        }
-        else {
-            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/tvshowReviews/" + id;
-        }
-        Log.d("searchid", id);
-
-        // Request a string response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        arr = null;
-                        try {
-                            arr = response.getJSONArray("results");
-                            Log.d(TAG, "getReviews: " + arr);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            cb.onSuccess(arr);
-                        } catch (JSONException | ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-
-            }
-        });
-        queue.add(request);
-    }
-
-
 
 }

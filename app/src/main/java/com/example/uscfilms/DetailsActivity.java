@@ -84,7 +84,7 @@ public class DetailsActivity extends AppCompatActivity {
                 }
                 String[] arr = new String[stringList.size()];
                 arr = stringList.toArray(arr);
-                genres = String.join(",", arr);
+                genres = String.join(", ", arr);
 
                 // find TextViews
                 titleText = findViewById(R.id.details_title);
@@ -98,28 +98,19 @@ public class DetailsActivity extends AppCompatActivity {
                 genresText.setText(genres);
                 yearText.setText(year);
 
-
                 getVideos(cxt, id, type);
 
             }
-        }, cxt, id, type);
+        }, cxt, id, type, "details");
     }
 
     private void getVideos(Context cxt, String id, String type) {
         Details details = new Details();
-        details.getVideos(new VolleyCallback() {
+        details.getDetails(new VolleyCallback2() {
             @Override
-            public void onSuccess(JSONArray res) throws JSONException {
-                Log.d("getVideosRes", "res: " + res);
-//                if (res == null) {
-//                    key = "tzkWB85ULJY";
-//                    Log.d("getVideos", "res is null");
-//                }
-//                else if (res.length() == 0) {
-//                    key = "tzkWB85ULJY";
-//                    Log.d("getVideos", "res is 0");
-//                }
-//                else {
+            public void onSuccess(JSONObject resObj) throws JSONException {
+                Log.d("getVideosRes", "res: " + resObj);
+                JSONArray res = resObj.getJSONArray("results");
                 if (res != null) {
                     if (res.length() != 0) {
                         Log.d("getVideos", "res is not null");
@@ -151,9 +142,6 @@ public class DetailsActivity extends AppCompatActivity {
                         }
                     }
                 }
-//                    if (key == null) {
-//                        key = "tzkWB85ULJY";
-//                    }
                         if (key != null) {
                             YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
                             getLifecycle().addObserver(youTubePlayerView);
@@ -177,16 +165,17 @@ public class DetailsActivity extends AppCompatActivity {
                         }
 
             }
-        }, cxt, id, type);
+        }, cxt, id, type, "videos");
     }
 
 
     public void getCast(Context cxt, String id, String type) {
         Details details = new Details();
         ArrayList<SingleCast> castList = new ArrayList<SingleCast>();
-        details.getCast(new VolleyCallback() {
+        details.getDetails(new VolleyCallback2() {
             @Override
-            public void onSuccess(JSONArray res) throws JSONException {
+            public void onSuccess(JSONObject resObj) throws JSONException {
+                JSONArray res = resObj.getJSONArray("cast");
                 for (int i = 0; i < 6; i++) {
                     if (res.getJSONObject(i) != null) {
                         JSONObject obj = res.getJSONObject(i);
@@ -207,7 +196,7 @@ public class DetailsActivity extends AppCompatActivity {
                 getReviews(cxt, id, type);
 
             }
-        }, cxt, id, type);
+        }, cxt, id, type, "casts");
     }
 
 
@@ -216,10 +205,11 @@ public class DetailsActivity extends AppCompatActivity {
 
         Details details = new Details();
         ArrayList<SingleReview> reviewList = new ArrayList<SingleReview>();
-        details.getReviews(new VolleyCallback() {
+        details.getDetails(new VolleyCallback2() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onSuccess(JSONArray res) throws JSONException, ParseException {
+            public void onSuccess(JSONObject resObj) throws JSONException, ParseException {
+                JSONArray res = resObj.getJSONArray("results");
                 for (int i = 0; i < 3; i++) {
                     Log.d("reviews", "res: " + res);
 
@@ -256,7 +246,7 @@ public class DetailsActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.VERTICAL, false));
                 recyclerView.setAdapter(adapter);
             }
-        }, cxt, id, type);
+        }, cxt, id, type, "reviews");
     }
 
 
