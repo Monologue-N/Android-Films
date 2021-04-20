@@ -34,8 +34,9 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/img_holder"/>
+                    android:layout_height="230dp"
+                    android:id="@+id/img_holder"
+                    android:scaleType="fitXY"/>
 
             </RelativeLayout>
 
@@ -70,7 +71,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp"
+                    app:trimMode="trimModeLength"
+                    app:trimLines="100"
+                    app:colorClickableText="@color/grey"/>
 
                 <TextView
                     android:id="@+id/genres"
@@ -143,6 +147,14 @@
                     android:textColor="@color/lake_blue"
                     android:textSize="24sp" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cast_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
 
                 <TextView
                     android:id="@+id/reviews"
@@ -161,6 +173,13 @@
                     android:text="Recommended Picks"
                     android:textColor="@color/lake_blue"
                     android:textSize="24sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recommended_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
 
             </LinearLayout>

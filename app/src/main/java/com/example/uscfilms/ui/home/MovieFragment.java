@@ -162,7 +162,7 @@ public class MovieFragment extends Fragment {
         trm.getTopRatedMovies(new VolleyCallback() {
             @Override
             public void onSuccess(JSONArray res) throws JSONException {
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < 10; i++) {
                     String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("poster_path");
 //                    ImageView image = view.findViewById(R.id.imageView);
 //                    Picasso.get().load(imgURL).into(image);
@@ -193,7 +193,7 @@ public class MovieFragment extends Fragment {
         trm.getPopularMovies(new VolleyCallback() {
             @Override
             public void onSuccess(JSONArray res) throws JSONException {
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < 10; i++) {
                     String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("poster_path");
 //                    ImageView image = view.findViewById(R.id.imageView);
 //                    Picasso.get().load(imgURL).into(image);

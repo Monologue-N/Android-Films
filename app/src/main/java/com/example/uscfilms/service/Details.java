@@ -111,6 +111,51 @@ public class Details {
     }
 
 
+    public void getCast(final VolleyCallback cb, Context cxt, String id, String type) {
+        queue = Volley.newRequestQueue(cxt.getApplicationContext());
+
+        this.type = type;
+        Log.d("getId4", id);
+        Log.d("getType4", type);
+
+        String url;
+
+        if (type.equals("movie")) {
+            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/movieCast/" + id;
+        }
+        else {
+            url = "https://sixth-starlight-308222.wn.r.appspot.com/apis/posts/tvshowCast/" + id;
+        }
+        Log.d("searchid", id);
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        arr = null;
+                        try {
+                            arr = response.getJSONArray("cast");
+                            Log.d(TAG, "getCasts: " + arr);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            cb.onSuccess(arr);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+
+            }
+        });
+        queue.add(request);
+    }
+
 
 
 }

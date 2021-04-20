@@ -10,5 +10,7 @@
     <color name="dark_blue">#1c272e</color>
     <color name="lake_blue">#256eb4</color>
     <color name="colorPrimary">#FFFFFF</color>
+    <color name="grey">#999999</color>
+
 
 </resources>

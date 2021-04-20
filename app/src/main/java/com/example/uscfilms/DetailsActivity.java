@@ -3,6 +3,9 @@ package com.example.uscfilms;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Build;
@@ -12,6 +15,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.uscfilms.adapter.CastAdapter;
+import com.example.uscfilms.adapter.RecyclerViewDataAdapter;
+import com.example.uscfilms.model.SingleCast;
 import com.example.uscfilms.service.Details;
 import com.example.uscfilms.service.VolleyCallback;
 import com.example.uscfilms.service.VolleyCallback2;
@@ -159,7 +165,33 @@ public class DetailsActivity extends AppCompatActivity {
                             imgHolder.bringToFront();
                         }
 
+            }
+        }, cxt, id, type);
+    }
 
+
+    public void getCast(Context cxt, String id, String type) {
+        Details details = new Details();
+        ArrayList<SingleCast> castList = new ArrayList<SingleCast>();
+        details.getCast(new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONArray res) throws JSONException {
+                for (int i = 0; i < 6; i++) {
+                    if (res.getJSONObject(i) != null) {
+                        JSONObject obj = res.getJSONObject(i);
+                        String profile_path = "https://image.tmdb.org/t/p/w500/" + obj.getString("profile_path");
+                        String name = obj.getString("name");
+                        String id = obj.getString("id");
+                        castList.add(new SingleCast(profile_path, name, id));
+                    }
+                }
+                RecyclerView recyclerView = findViewById(R.id.cast_recycler_view);
+                recyclerView.setHasFixedSize(true);
+                CastAdapter adapter = new CastAdapter(cxt, castList);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.VERTICAL, false));
+                int numberOfColumns = 3;
+                recyclerView.setLayoutManager(new GridLayoutManager(cxt, numberOfColumns));
+                recyclerView.setAdapter(adapter);
             }
         }, cxt, id, type);
     }
@@ -174,12 +206,11 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-
-
         Context cxt = getApplicationContext();
         String id = getIntent().getStringExtra("id");
         String type = getIntent().getStringExtra("type");
         getDetails(cxt, id, type);
+        getCast(cxt, id, type);
 
     }
 
