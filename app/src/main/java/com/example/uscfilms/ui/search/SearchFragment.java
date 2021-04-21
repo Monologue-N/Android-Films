@@ -85,11 +85,13 @@ public class SearchFragment extends Fragment {
                         for (int i = 0; i < length; i++) {
                             if (res.getJSONObject(i) != null) {
                                 JSONObject obj = res.getJSONObject(i);
+                                String id = obj.getString("id");
                                 String backdrop_path = "https://image.tmdb.org/t/p/w500" + obj.getString("backdrop_path");
-                                String type_year = obj.getString("type") + "(" + obj.getString("year") + ")";
+                                String type = obj.getString("type");
+                                String year = obj.getString("year");
                                 String title = obj.getString("title");
                                 String rating = obj.getString("rating");
-                                searchList.add(new SingleSearchResult(backdrop_path, type_year, title, rating));
+                                searchList.add(new SingleSearchResult(id, backdrop_path, type, year, title, rating));
                             }
                         }
                         RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);

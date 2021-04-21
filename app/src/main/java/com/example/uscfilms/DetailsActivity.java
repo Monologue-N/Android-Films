@@ -292,6 +292,7 @@ public class DetailsActivity extends AppCompatActivity {
         Context cxt = getApplicationContext();
         String id = getIntent().getStringExtra("id");
         String type = getIntent().getStringExtra("type");
+        type = type.toLowerCase();
         getDetails(cxt, id, type);
         getCast(cxt, id, type);
         getRecommended(cxt, id, type);

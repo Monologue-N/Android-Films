@@ -1,16 +1,28 @@
 package com.example.uscfilms.model;
 
 public class SingleSearchResult {
+    String id;
     String backdrop_path;
-    String type_year;
+    String type;
+    String year;
     String title;
     String rating;
 
-    public SingleSearchResult(String backdrop_path, String type_year, String title, String rating) {
+    public SingleSearchResult(String id, String backdrop_path, String type, String year, String title, String rating) {
+        this.id = id;
         this.backdrop_path = backdrop_path;
-        this.type_year = type_year;
+        this.type = type;
+        this.year = year;
         this.title = title;
         this.rating = rating;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getBackdrop_path() {
@@ -21,12 +33,20 @@ public class SingleSearchResult {
         this.backdrop_path = backdrop_path;
     }
 
-    public String getType_year() {
-        return type_year;
+    public String getType() {
+        return type;
     }
 
-    public void setType_year(String type_year) {
-        this.type_year = type_year;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public String getTitle() {
