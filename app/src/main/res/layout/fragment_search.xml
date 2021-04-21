@@ -6,7 +6,8 @@
     android:background="@color/white"
     android:layout_marginBottom="?attr/actionBarSize"
     android:backgroundTint="@color/dark_blue"
-    xmlns:shimmer="http://schemas.android.com/apk/res-auto">
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -20,20 +21,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.SearchView
+<!--            <androidx.appcompat.widget.SearchView-->
+            <android.widget.SearchView
                 android:id="@+id/search_tool_bar"
                 android:layoutDirection="rtl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                shimmer:queryHint="Search movies and TV"
-                shimmer:iconifiedByDefault="false"
+                android:queryHint="Search movies and TV"
+                android:iconifiedByDefault="false"
                 style="@style/SearchViewStyle"
                 />
 
 
         </RelativeLayout>
 
+
     </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical" />
 
 
 </LinearLayout>

@@ -179,7 +179,8 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(JSONObject resObj) throws JSONException {
                 JSONArray res = resObj.getJSONArray("cast");
-                for (int i = 0; i < 6; i++) {
+                int length = Math.min(6, res.length());
+                for (int i = 0; i < length; i++) {
                     if (res.getJSONObject(i) != null) {
                         JSONObject obj = res.getJSONObject(i);
                         String profile_path = "https://image.tmdb.org/t/p/w500/" + obj.getString("profile_path");
@@ -212,7 +213,8 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(JSONObject resObj) throws JSONException, ParseException {
                 JSONArray res = resObj.getJSONArray("results");
-                for (int i = 0; i < 3; i++) {
+                int length = Math.min(3, res.length());
+                for (int i = 0; i < length; i++) {
                     Log.d("reviews", "res: " + res);
 
                     if (res.getJSONObject(i) != null) {
@@ -257,7 +259,8 @@ public class DetailsActivity extends AppCompatActivity {
         medias.getRecommended(new VolleyCallback() {
             @Override
             public void onSuccess(JSONArray res) throws JSONException, ParseException {
-                for (int i = 0; i < 10; i++) {
+                int length = Math.min(10, res.length());
+                for (int i = 0; i < length; i++) {
                     if (res.getJSONObject(i) != null) {
                         JSONObject obj = res.getJSONObject(i);
                         String id = obj.getString("id");

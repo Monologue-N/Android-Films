@@ -64,7 +64,8 @@ public class MovieFragment extends Fragment {
         medias.getMedia(new VolleyCallback() {
             @Override
             public void onSuccess(JSONArray res) throws JSONException {
-                for (int i = 0; i < 6; i++) {
+                int length = Math.min(6, res.length());
+                for (int i = 0; i < length; i++) {
                     String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("poster_path");
                     sliderDataArrayList.add(new SliderData(imgURL, res.getJSONObject(i).getString("id"), "movie"));
                 }
@@ -105,7 +106,8 @@ public class MovieFragment extends Fragment {
         medias.getMedia(new VolleyCallback() {
             @Override
             public void onSuccess(JSONArray res) throws JSONException {
-                for (int i = 0; i < 10; i++) {
+                int length = Math.min(10, res.length());
+                for (int i = 0; i < length; i++) {
                     String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("poster_path");
                     Log.d(TAG, "onSuccess1" + imgURL);
 
@@ -127,7 +129,8 @@ public class MovieFragment extends Fragment {
         medias.getMedia(new VolleyCallback() {
             @Override
             public void onSuccess(JSONArray res) throws JSONException {
-                for (int i = 0; i < 10; i++) {
+                int length = Math.min(10, res.length());
+                for (int i = 0; i < length; i++) {
                     String imgURL = "https://image.tmdb.org/t/p/w500" + res.getJSONObject(i).getString("poster_path");
                     singleCard.add(new SingleCard(res.getJSONObject(i).getString("id"), imgURL, res.getJSONObject(i).getString("title"), "movie"));
                 }
