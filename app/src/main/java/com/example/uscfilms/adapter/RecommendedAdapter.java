@@ -30,7 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.SingleItemRowHolder> {
+public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.SingleItemRowHolder> {
 
     private ArrayList<SingleCard> itemsList;
     private Context mContext;

@@ -17,11 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.uscfilms.adapter.CastAdapter;
+import com.example.uscfilms.adapter.RecommendedAdapter;
 import com.example.uscfilms.adapter.RecyclerViewDataAdapter;
 import com.example.uscfilms.adapter.ReviewsAdapter;
+import com.example.uscfilms.model.SingleCard;
 import com.example.uscfilms.model.SingleCast;
 import com.example.uscfilms.model.SingleReview;
 import com.example.uscfilms.service.Details;
+import com.example.uscfilms.service.Medias;
 import com.example.uscfilms.service.VolleyCallback;
 import com.example.uscfilms.service.VolleyCallback2;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -186,9 +189,8 @@ public class DetailsActivity extends AppCompatActivity {
                     }
                 }
                 RecyclerView recyclerView = findViewById(R.id.cast_recycler_view);
-                recyclerView.setHasFixedSize(true);
+//                recyclerView.setHasFixedSize(true);
                 CastAdapter adapter = new CastAdapter(cxt, castList);
-//                recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.VERTICAL, false));
                 int numberOfColumns = 3;
                 recyclerView.setLayoutManager(new GridLayoutManager(cxt, numberOfColumns));
                 recyclerView.setAdapter(adapter);
@@ -249,6 +251,32 @@ public class DetailsActivity extends AppCompatActivity {
         }, cxt, id, type, "reviews");
     }
 
+    public void getRecommended(Context cxt, String id, String type) {
+        Medias medias = new Medias();
+        ArrayList<SingleCard> cardList = new ArrayList<>();
+        medias.getRecommended(new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONArray res) throws JSONException, ParseException {
+                for (int i = 0; i < 10; i++) {
+                    if (res.getJSONObject(i) != null) {
+                        JSONObject obj = res.getJSONObject(i);
+                        String id = obj.getString("id");
+                        String imgURL = "https://image.tmdb.org/t/p/w500" + obj.getString("poster_path");
+                        Log.d("Recommended", "img: " + imgURL);
+                        String title;
+                        title = (type.equals("movie")) ? obj.getString("title") : obj.getString("name");
+                        cardList.add(new SingleCard(id, imgURL, title, type));
+                    }
+                }
+                RecyclerView recyclerView = findViewById(R.id.recommended_recycler_view);
+                recyclerView.setHasFixedSize(true);
+                RecommendedAdapter adapter = new RecommendedAdapter(cxt, cardList);
+                recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.HORIZONTAL, false));
+                recyclerView.setAdapter(adapter);
+            }
+        }, cxt, type, "recommended", id);
+    }
+
 
 
     @Override
@@ -263,6 +291,7 @@ public class DetailsActivity extends AppCompatActivity {
         String type = getIntent().getStringExtra("type");
         getDetails(cxt, id, type);
         getCast(cxt, id, type);
+        getRecommended(cxt, id, type);
 
     }
 

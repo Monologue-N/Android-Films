@@ -29,6 +29,41 @@ public class Medias {
         String root = "https://mono-hw9-backend.uk.r.appspot.com/apis/posts/";
         String url = root + type + "/" + category;
 
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        arr = null;
+                        try {
+                            arr = response.getJSONArray("results");
+                            Log.d(TAG, "getJSONArray: " + arr);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            cb.onSuccess(arr);
+                        } catch (JSONException | ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+
+            }
+        });
+        queue.add(request);
+    }
+
+    public void getRecommended(final VolleyCallback cb, Context cxt, String type, String category, String id) {
+        queue = Volley.newRequestQueue(cxt.getApplicationContext());
+        String root = "https://mono-hw9-backend.uk.r.appspot.com/apis/posts/";
+        String url = root + type + "/" + category + "/" + id;
+
+
         // Request a string response from the provided URL.
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
