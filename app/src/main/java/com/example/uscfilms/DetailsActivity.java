@@ -1,6 +1,7 @@
 package com.example.uscfilms;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -9,12 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.uscfilms.adapter.CastAdapter;
 import com.example.uscfilms.adapter.RecommendedAdapter;
@@ -27,6 +32,7 @@ import com.example.uscfilms.service.Details;
 import com.example.uscfilms.service.Medias;
 import com.example.uscfilms.service.VolleyCallback;
 import com.example.uscfilms.service.VolleyCallback2;
+import com.google.gson.JsonParser;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -49,6 +55,7 @@ import java.util.TimeZone;
 public class DetailsActivity extends AppCompatActivity {
     private String key;
     private String backdrop_url;
+    private String poster_path;
     private String title;
     private String overview;
     private String genres;
@@ -58,6 +65,9 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView overviewText;
     private TextView genresText;
     private TextView yearText;
+    private TextView posterPathText;
+
+    private boolean added = false;
 
 
     private void getDetails(Context cxt, String id, String type) {
@@ -68,6 +78,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onSuccess(JSONObject res) throws JSONException {
                 // fetch data
                 backdrop_url = "https://image.tmdb.org/t/p/w500" + res.getString("backdrop_path");
+                poster_path = "https://image.tmdb.org/t/p/w500" + res.getString("poster_path");
                 if (type.equals("movie")) {
                     title = res.getString("title");
                     year = String.valueOf(Integer.parseInt(res.getString("release_date").substring(0, 4)));
@@ -94,12 +105,15 @@ public class DetailsActivity extends AppCompatActivity {
                 overviewText = findViewById(R.id.overviewText);
                 genresText = findViewById(R.id.genresText);
                 yearText = findViewById(R.id.yearText);
+                posterPathText = findViewById(R.id.details_poster_path);
+
 
                 // render to view
                 titleText.setText(title);
                 overviewText.setText(overview);
                 genresText.setText(genres);
                 yearText.setText(year);
+                posterPathText.setText(poster_path);
 
                 getVideos(cxt, id, type);
 
@@ -231,8 +245,13 @@ public class DetailsActivity extends AppCompatActivity {
 
 
                         String rating = obj.getJSONObject("author_details").getString("rating");
-                        rating = Integer.toString(Integer.parseInt(rating) / 2) + "/5";
-
+                        Log.d("rating", ":" + rating);
+//                        if (rating != null) {
+//                            rating = Integer.toString(Integer.parseInt(rating) / 2) + "/5";
+//                        }
+//                        else {
+                            rating = "0/5";
+//                        }
                         String content = obj.getString("content");
 
                         String creation = "by " + author + " on " + created_at;
@@ -293,12 +312,81 @@ public class DetailsActivity extends AppCompatActivity {
         String id = getIntent().getStringExtra("id");
         String type = getIntent().getStringExtra("type");
         type = type.toLowerCase();
+
+        ImageView addToWatchListBtn = findViewById(R.id.addToWatchlist);
+        addToWatchListBtn.setClickable(true);
+        addToWatchListBtn.bringToFront();
+
+        added = false;
+        Log.d("checkadd", "I am here");
+
+        // check if the key exists
+        SharedPreferences sharedPref = getSharedPreferences("watchlist", Context.MODE_PRIVATE);
+        String ifAdded = sharedPref.getString(id, "");
+        Log.d("checkadd", ifAdded);
+        added = (ifAdded != null && !ifAdded.isEmpty());
+
+        if (added) {
+            // already added to watchlist
+            addToWatchListBtn.setImageResource(R.drawable.ic_baseline_remove_circle_outline_24);
+        }
+        else {
+            // not in watchlist
+            addToWatchListBtn.setImageResource(R.drawable.ic_baseline_add_circle_outline_24);
+        }
+        Log.d("checkaddBool", "" +added);
+
+
+        String finalType = type;
+        addToWatchListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // remove
+                if (added) {
+                    Toast.makeText(v.getContext(), title + " was removed from Watchlist" , Toast.LENGTH_LONG).show();
+
+                    SharedPreferences sharedPref = getSharedPreferences("watchlist", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.remove(id);
+                    editor.apply();
+                    addToWatchListBtn.setImageResource(R.drawable.ic_baseline_add_circle_outline_24);
+                    added = false;
+                }
+
+                // add
+                else {
+                    Toast.makeText(v.getContext(), title + " was added to Watchlist" , Toast.LENGTH_LONG).show();
+                    SharedPreferences sharedPref = getSharedPreferences("watchlist", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+
+                    String nothing = "{}";
+                    JSONObject info = null;
+                    try {
+                        info = new JSONObject(nothing);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        info.put("type", finalType);
+                        info.put("poster_path", poster_path);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String info_str = info.toString();
+                    editor.putString(id, info_str);
+                    editor.apply();
+                    addToWatchListBtn.setImageResource(R.drawable.ic_baseline_remove_circle_outline_24);
+                    added = true;
+                    Log.d("watchlist", "-" + editor);
+                }
+
+            }
+        });
+
         getDetails(cxt, id, type);
         getCast(cxt, id, type);
         getRecommended(cxt, id, type);
 
     }
-
-
 
 }

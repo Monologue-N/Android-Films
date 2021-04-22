@@ -7,6 +7,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -95,5 +96,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+
+    public void refreshWatchlist() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        Log.d("findFrag", "-" + currentFragment);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Log.d("findFragTrans", "-" + fragmentTransaction);
+
+        fragmentTransaction.detach(currentFragment);
+        fragmentTransaction.attach(currentFragment);
+        fragmentTransaction.commit();
+
+    }
 
 }

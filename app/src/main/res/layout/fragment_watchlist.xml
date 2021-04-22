@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.watchlist.WatchlistFragment">
+    tools:context=".ui.watchlist.WatchlistFragment"
+    android:id="@+id/watchlist_fragment">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/_watchlist"
-        android:textSize="24sp"
-        android:textColor="@color/white" />
-</FrameLayout>
+        android:id="@+id/watchlist_hint"
+        android:textColor="@color/white"
+        android:layout_gravity="center_vertical"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/watchlist_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp" />
+
+
+</LinearLayout>
