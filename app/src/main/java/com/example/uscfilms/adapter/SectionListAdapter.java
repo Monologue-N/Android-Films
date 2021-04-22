@@ -217,6 +217,8 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                                 Log.d("watchlist", "-" + editor);
                             }
                             else if (menuItem.getTitle().equals("Remove from Watchlist")) {
+                                Toast.makeText(view.getContext(), title + " was removed from Watchlist" , Toast.LENGTH_LONG).show();
+
                                 SharedPreferences sharedPref = mContext.getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.remove(id);

@@ -1,5 +1,6 @@
 package com.example.uscfilms;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,14 +14,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.uscfilms.service.Details;
+import com.example.uscfilms.service.VolleyCallback2;
 import com.example.uscfilms.ui.details.DetailsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "lifecycle";
     private NavController navController;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,4 +127,68 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         refreshWatchlist();
     }
+
+//    private void getVideos(Context cxt, String id, String type) {
+//        Details details = new Details();
+//        details.getDetails(new VolleyCallback2() {
+//            @Override
+//            public void onSuccess(JSONObject resObj) throws JSONException {
+//                Log.d("getVideosRes", "res: " + resObj);
+//                JSONArray res = resObj.getJSONArray("results");
+//                if (res != null) {
+//                    if (res.length() != 0) {
+//                        Log.d("getVideos", "res is not null");
+//
+//                        for (int i = 0; i < res.length(); i++) {
+//                            JSONObject obj = res.getJSONObject(i);
+//                            Log.d("getVideosTrailer", "obj:" + obj);
+//                            String type = obj.getString("type");
+//                            Log.d("getVideosTrailer", "type:" + type);
+//
+//                            if ((type.equals("Trailer")) && obj.getString("key") != null) {
+//                                key = obj.getString("key");
+//                                Log.d("getVideosTrailer", key);
+//                                break;
+//                            }
+//                        }
+//                        if (key == null) {
+//                            for (int i = 0; i < res.length(); i++) {
+//                                JSONObject obj = res.getJSONObject(i);
+//                                Log.d("getVideosTeaser", "obj:" + obj);
+//                                String type = obj.getString("type");
+//                                Log.d("getVideosTeaser", "type:" + type);
+//                                if ((type.equals("Teaser")) && obj.getString("key") != null) {
+//                                    key = obj.getString("key");
+//                                    Log.d("getVideosTeaser", key);
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                if (key != null) {
+//                    YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
+//                    getLifecycle().addObserver(youTubePlayerView);
+//                    Log.d("getVideos", key);
+//                    youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+//                        @Override
+//                        public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+//                            Log.d("youtubePlayer", "loading?");
+//                            youTubePlayer.loadVideo(key, 0);
+//                            Log.d("youtubePlayer", "loaded?");
+//
+//                        }
+//                    });
+//                } else {
+//                    YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
+//                    youTubePlayerView.setVisibility(View.GONE);
+//                    ImageView imgHolder = findViewById(R.id.img_holder);
+//                    Picasso.get().load(backdrop_url).into(imgHolder);
+//                    Log.d("novideo", "url: " + backdrop_url);
+//                    imgHolder.bringToFront();
+//                }
+//
+//            }
+//        }, cxt, id, type, "videos");
+//    }
 }
