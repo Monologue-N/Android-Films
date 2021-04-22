@@ -93,15 +93,14 @@ public class WatchlistFragment extends Fragment {
                 }
 
 
-
                 RecyclerView recyclerView = view.findViewById(R.id.watchlist_recycler_view);
                 recyclerView.setHasFixedSize(true);
 
                 WatchlistAdapter adapter = new WatchlistAdapter(mContext, watchlistItemArrayList);
+                recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
                 ItemTouchHelper.Callback callback = new ItemMoveCallback(adapter);
                 ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
                 touchHelper.attachToRecyclerView(recyclerView);
-                recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
                 recyclerView.setAdapter(adapter);
             } catch (JSONException e) {
                 e.printStackTrace();

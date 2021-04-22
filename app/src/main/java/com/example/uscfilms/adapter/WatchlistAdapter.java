@@ -80,6 +80,9 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
 
     @Override
     public void onRowMoved(int fromPosition, int toPosition) {
+        Log.d("position", "from " + fromPosition);
+        Log.d("position", "to " + toPosition);
+
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(watchlist, i, i + 1);
@@ -100,7 +103,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
 
     @Override
     public void onRowClear(SingleItemRowHolder myViewHolder) {
-        myViewHolder.rowView.setBackgroundColor(Color.WHITE);
+        myViewHolder.rowView.setBackgroundColor(Color.TRANSPARENT);
 
     }
 
