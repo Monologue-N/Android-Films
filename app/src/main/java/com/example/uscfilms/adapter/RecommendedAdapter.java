@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.uscfilms.DetailsActivity;
 import com.example.uscfilms.MainActivity;
 import com.example.uscfilms.R;
 import com.example.uscfilms.model.SingleCard;
@@ -112,11 +113,11 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         public void switchContent(String id, String type) {
             if (mContext == null)
                 return;
-            if (mContext instanceof MainActivity) {
-                MainActivity mainActivity = (MainActivity) mContext;
+            if (mContext instanceof DetailsActivity) {
+                DetailsActivity detailsActivity = (DetailsActivity) mContext;
                 Log.d("getId2", id);
                 Log.d("getId2", "type: " + type);
-                mainActivity.switchContent(id, type);
+                detailsActivity.switchContent(id, type);
             }
         }
 

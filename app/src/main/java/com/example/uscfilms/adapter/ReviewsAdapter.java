@@ -1,14 +1,17 @@
 package com.example.uscfilms.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.uscfilms.DetailsActivity;
 import com.example.uscfilms.R;
 import com.example.uscfilms.model.SingleCard;
 import com.example.uscfilms.model.SingleCast;
@@ -58,7 +61,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewHo
         return (null != reviewList ? reviewList.size() : 0);
     }
 
-    public static class ReviewHolder extends RecyclerView.ViewHolder {
+    public class ReviewHolder extends RecyclerView.ViewHolder {
 
         protected TextView creation;
 
@@ -74,6 +77,29 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewHo
             this.rating = view.findViewById(R.id.review_rating);
             this.review = view.findViewById(R.id.review_review);
 
+            view.setClickable(true);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(view.getContext(), "on click review", Toast.LENGTH_SHORT).show();
+                    String creationText = (String) creation.getText();
+                    String ratingText = (String) rating.getText();
+//                    String reviewText = (String) review.getText();
+                    switchToReview(creationText, ratingText);
+
+                }
+            });
+
         }
+
+        public void switchToReview(String creationText, String ratingText) {
+            if (mContext == null)
+                return;
+            if (mContext instanceof DetailsActivity) {
+                DetailsActivity detailsActivity = (DetailsActivity) mContext;
+                detailsActivity.switchToReview(creationText, ratingText);
+            }
+        }
+
     }
 }

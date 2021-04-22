@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.AdapterListUpdateCallback;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import com.example.uscfilms.R;
 import com.example.uscfilms.adapter.RecommendedAdapter;
 import com.example.uscfilms.adapter.WatchlistAdapter;
 import com.example.uscfilms.model.SingleWatchlistItem;
+import com.example.uscfilms.service.ItemMoveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,10 +91,16 @@ public class WatchlistFragment extends Fragment {
                     String title = obj.getString("title");
                     watchlistItemArrayList.add(new SingleWatchlistItem(id, type, poster_path, title));
                 }
+
+
+
                 RecyclerView recyclerView = view.findViewById(R.id.watchlist_recycler_view);
                 recyclerView.setHasFixedSize(true);
 
                 WatchlistAdapter adapter = new WatchlistAdapter(mContext, watchlistItemArrayList);
+                ItemTouchHelper.Callback callback = new ItemMoveCallback(adapter);
+                ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+                touchHelper.attachToRecyclerView(recyclerView);
                 recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
                 recyclerView.setAdapter(adapter);
             } catch (JSONException e) {

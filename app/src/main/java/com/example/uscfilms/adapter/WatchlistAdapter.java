@@ -3,6 +3,7 @@ package com.example.uscfilms.adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.example.uscfilms.MainActivity;
 import com.example.uscfilms.R;
 import com.example.uscfilms.model.SingleCard;
 import com.example.uscfilms.model.SingleWatchlistItem;
+import com.example.uscfilms.service.ItemMoveCallback;
 import com.example.uscfilms.ui.details.DetailsFragment;
 import com.squareup.picasso.Picasso;
 
@@ -37,8 +39,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.SingleItemRowHolder>  {
+public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.SingleItemRowHolder> implements ItemMoveCallback.ItemTouchHelperContract  {
 
     private ArrayList<SingleWatchlistItem> watchlist;
     private Context mContext;
@@ -75,6 +78,32 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
         return (null != watchlist ? watchlist.size() : 0);
     }
 
+    @Override
+    public void onRowMoved(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(watchlist, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(watchlist, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onRowSelected(SingleItemRowHolder myViewHolder) {
+        myViewHolder.rowView.setBackgroundColor(Color.GRAY);
+
+    }
+
+    @Override
+    public void onRowClear(SingleItemRowHolder myViewHolder) {
+        myViewHolder.rowView.setBackgroundColor(Color.WHITE);
+
+    }
+
 
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
 
@@ -90,9 +119,13 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
 
         protected TextView watchlist_poster_path;
 
+        View rowView;
+
 
         public SingleItemRowHolder(View view, int i) {
             super(view);
+
+            rowView = view;
 
             this.watchlist_id = view.findViewById(R.id.watchlist_id);
             this.watchlist_img =  view.findViewById(R.id.watchlist_img);
@@ -136,7 +169,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
                                 Log.d("2222", "??" + obj.getString("id").equals(id));
                                 String title = obj.getString("title");
                                 prev_arr.remove(i);
-                                Toast.makeText(view.getContext(),  title + " was removed from Watchlist" , Toast.LENGTH_LONG).show();
+                                Toast.makeText(view.getContext(),  title + " was removed from Watchlist" , Toast.LENGTH_SHORT).show();
 
                                 break;
                             }

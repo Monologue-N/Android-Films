@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -252,7 +253,7 @@ public class DetailsActivity extends AppCompatActivity {
                             rating = Integer.toString(Integer.parseInt(rating) / 2) + "/5";
                         }
                         else {
-                            rating = "0";
+                            rating = "0/5";
                         }
                         String content = obj.getString("content");
 
@@ -358,7 +359,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // remove
                 if (added) {
-                    Toast.makeText(v.getContext(), title + " was removed from Watchlist" , Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(), title + " was removed from Watchlist" , Toast.LENGTH_SHORT).show();
                     SharedPreferences sharedPref = getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -385,7 +386,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                 // add
                 else {
-                    Toast.makeText(v.getContext(), title + " was added to Watchlist" , Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(), title + " was added to Watchlist" , Toast.LENGTH_SHORT).show();
                     SharedPreferences sharedPref = getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -439,6 +440,22 @@ public class DetailsActivity extends AppCompatActivity {
         getCast(cxt, id, type);
         getRecommended(cxt, id, type);
 
+    }
+
+    public void switchContent(String id, String type) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("type", type);
+        startActivity(intent);
+    }
+
+    public void switchToReview(String creation, String rating) {
+        Intent intent = new Intent(this, ReviewActivity.class);
+        Log.d("switch", "to review");
+        intent.putExtra("creation", creation);
+        intent.putExtra("rating", rating);
+//        intent.putExtra("review", review);
+        startActivity(intent);
     }
 
 }

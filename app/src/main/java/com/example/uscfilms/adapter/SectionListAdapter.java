@@ -213,7 +213,7 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                                 }
                             }
                             else if (menuItem.getTitle().equals("Add to Watchlist")) {
-                                Toast.makeText(view.getContext(), title + " was added to Watchlist" , Toast.LENGTH_LONG).show();
+                                Toast.makeText(view.getContext(), title + " was added to Watchlist" , Toast.LENGTH_SHORT).show();
                                 SharedPreferences sharedPref = view.getContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 String prev = sharedPref.getString("list", "");
@@ -259,7 +259,7 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 
                             }
                             else if (menuItem.getTitle().equals("Remove from Watchlist")) {
-                                Toast.makeText(view.getContext(), title + " was removed from Watchlist" , Toast.LENGTH_LONG).show();
+                                Toast.makeText(view.getContext(), title + " was removed from Watchlist" , Toast.LENGTH_SHORT).show();
 
                                 SharedPreferences sharedPref = mContext.getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
