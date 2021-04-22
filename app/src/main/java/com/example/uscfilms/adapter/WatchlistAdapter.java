@@ -66,7 +66,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
         Log.d("showType", "" + singleItem.getType());
         Picasso.get().load(singleItem.getPoster_path()).into(holder.watchlist_img);
         holder.watchlist_img_mask.setBackground(Drawable.createFromPath("@drawable/gradient"));
-        holder.watchlist_img_mask.bringToFront();
+//        holder.watchlist_img_mask.bringToFront();
         holder.watchlist_poster_path.setText(singleItem.getPoster_path());
     }
 
@@ -101,10 +101,10 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
             this.watchlist_remove_btn = view.findViewById(R.id.watchlist_remove);
             this.watchlist_poster_path = view.findViewById(R.id.watchlist_poster_path);
 
-            watchlist_img.bringToFront();
+//            watchlist_img.bringToFront();
             watchlist_img.setClickable(true);
 
-            watchlist_remove_btn.bringToFront();
+//            watchlist_remove_btn.bringToFront();
             watchlist_remove_btn.setClickable(true);
 
             watchlist_img.setOnClickListener(new View.OnClickListener() {

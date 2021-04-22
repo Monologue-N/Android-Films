@@ -1,11 +1,13 @@
 package com.example.uscfilms.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,9 @@ import com.example.uscfilms.model.SingleCard;
 import com.example.uscfilms.ui.details.DetailsFragment;
 import com.squareup.picasso.Picasso;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -58,6 +63,8 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 
         holder.titleId.setText(singleItem.getId());
         holder.titleType.setText(singleItem.getType());
+        holder.titleTitle.setText(singleItem.getTitle());
+        holder.titlePosterPath.setText(singleItem.getBackdrop_path());
         Picasso.get().load(singleItem.getBackdrop_path()).into(holder.itemImage);
         holder.itemImageMask.setBackground(Drawable.createFromPath("@drawable/gradient"));
         holder.itemImageMask.bringToFront();
@@ -89,6 +96,10 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
 
         protected Button button;
 
+        protected TextView titleTitle;
+
+        protected TextView titlePosterPath;
+
 
         public SingleItemRowHolder(View view, int i) {
             super(view);
@@ -97,6 +108,8 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
             this.itemImage = (ImageView) view.findViewById(R.id.itemImage);
             this.itemImageMask = view.findViewById(R.id.itemImageMask);
             this.titleType = view.findViewById(R.id.titleType);
+            this.titleTitle = view.findViewById(R.id.titleTitle);
+            this.titlePosterPath = view.findViewById(R.id.titlePosterPath);
 
             itemImage.bringToFront();
 //
@@ -145,13 +158,32 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                     // Initializing the popup menu and giving the reference as current context
                     PopupMenu popupMenu = new PopupMenu(view.getContext(), button);
 
+                    String id = (String) titleId.getText();
+                    String type = (String) titleType.getText();
+                    String title = (String) titleTitle.getText();
+                    String poster_path = (String) titlePosterPath.getText();
+
                     // Inflating popup menu from popup_menu.xml file
                     popupMenu.getMenuInflater().inflate(R.menu.pop_up_menu, popupMenu.getMenu());
+
+                    MenuItem checkItem = popupMenu.getMenu().getItem(3);
+                    boolean added = false;
+                    SharedPreferences sharedPref = view.getContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE);
+                    String ifAdded = sharedPref.getString(id, "");
+                    Log.d("checkadd", ifAdded);
+                    added = (ifAdded != null && !ifAdded.isEmpty());
+                    if (added) {
+                        checkItem.setTitle("Remove from Watchlist");
+                    }
+                    else {
+                        checkItem.setTitle("Add to Watchlist");
+                    }
+
+
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            String id = (String) titleId.getText();
-                            String type = (String) titleType.getText();
+
                             if (menuItem.getTitle().equals("Open in TMDB")) {
                                 if (mContext == null)
                                     return false;
@@ -160,10 +192,57 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                                     mainActivity.goToTMDBWithId(id, type);
                                 }
                             }
+                            else if (menuItem.getTitle().equals("Add to Watchlist")) {
+                                Toast.makeText(view.getContext(), title + " was added to Watchlist" , Toast.LENGTH_LONG).show();
+                                SharedPreferences sharedPref = view.getContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+
+                                String nothing = "{}";
+                                JSONObject info = null;
+                                try {
+                                    info = new JSONObject(nothing);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                try {
+                                    info.put("type", type);
+                                    info.put("poster_path", poster_path);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                String info_str = info.toString();
+                                editor.putString(id, info_str);
+                                editor.apply();
+                                menuItem.setTitle("Remove from Watchlist");
+                                Log.d("watchlist", "-" + editor);
+                            }
+                            else if (menuItem.getTitle().equals("Remove from Watchlist")) {
+                                SharedPreferences sharedPref = mContext.getSharedPreferences("watchlist", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.remove(id);
+                                editor.apply();
+                                menuItem.setTitle("Add to Watchlist");
+                            }
+                            else if (menuItem.getTitle().equals("Share on Facebook")) {
+                                if (mContext == null)
+                                    return false;
+                                if (mContext instanceof MainActivity) {
+                                    MainActivity mainActivity = (MainActivity) mContext;
+                                    mainActivity.goToFB(id, type);
+                                }
+                            }
+                            else if (menuItem.getTitle().equals("Share on Twitter")) {
+                                if (mContext == null)
+                                    return false;
+                                if (mContext instanceof MainActivity) {
+                                    MainActivity mainActivity = (MainActivity) mContext;
+                                    mainActivity.goToTwitter(id, type);
+                                }
+                            }
 
 
                             // Toast message on menu item clicked
-                            Toast.makeText(view.getContext(), "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(view.getContext(), "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
                             return true;
                         }
                     });
