@@ -30,6 +30,7 @@ import com.example.uscfilms.ui.details.DetailsFragment;
 import com.squareup.picasso.Picasso;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,7 +120,7 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                 @Override
                 public void onClick(View v) {
                     Log.d("click", "clicked");
-                    Toast.makeText(v.getContext(), "On this click",  Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(v.getContext(), "On this click",  Toast.LENGTH_SHORT).show();
 
 
 //                    Fragment fragment = new DetailsFragment();
@@ -169,9 +170,28 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                     MenuItem checkItem = popupMenu.getMenu().getItem(3);
                     boolean added = false;
                     SharedPreferences sharedPref = view.getContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE);
-                    String ifAdded = sharedPref.getString(id, "");
-                    Log.d("checkadd", ifAdded);
-                    added = (ifAdded != null && !ifAdded.isEmpty());
+//                    String ifAdded = sharedPref.getString(id, "");
+//                    Log.d("checkadd", ifAdded);
+//                    added = (ifAdded != null && !ifAdded.isEmpty());
+
+                    String prev = sharedPref.getString("list", "");
+
+                    if (prev != null && !prev.isEmpty()) {
+                        try {
+                            JSONArray prev_arr = new JSONArray(prev);
+                            for (int i = 0; i < prev_arr.length(); i++) {
+                                JSONObject obj = prev_arr.getJSONObject(i);
+                                if (obj.getString("id").equals(id)) {
+                                    added = true;
+                                    break;
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
                     if (added) {
                         checkItem.setTitle("Remove from Watchlist");
                     }
@@ -196,34 +216,71 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
                                 Toast.makeText(view.getContext(), title + " was added to Watchlist" , Toast.LENGTH_LONG).show();
                                 SharedPreferences sharedPref = view.getContext().getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
+                                String prev = sharedPref.getString("list", "");
+                                try {
+                                    JSONArray prevArray;
+                                    if (prev != null && !prev.isEmpty()) {
+                                        Log.d("222watchlist", "-" + prev);
+                                        prevArray = new JSONArray(prev);
+                                        Log.d("222watchlist", "-" + prevArray);
+                                    }
+                                    else {
+                                        prevArray = new JSONArray();
+                                    }
 
-                                String nothing = "{}";
-                                JSONObject info = null;
-                                try {
-                                    info = new JSONObject(nothing);
+                                    String nothing = "{}";
+                                    JSONObject info = null;
+                                    try {
+                                        info = new JSONObject(nothing);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    try {
+                                        info.put("id", id);
+                                        info.put("type", type);
+                                        info.put("poster_path", poster_path);
+                                        info.put("title", title);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    prevArray.put(info);
+//                                    JSONObject info_obj = new JSONObject();
+//                                    info_obj.put("info", prevArray);
+
+                                    editor.putString("list", prevArray.toString());
+                                    editor.apply();
+                                    menuItem.setTitle("Remove from Watchlist");
+                                    Log.d("watchlist", "-" + editor);
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                try {
-                                    info.put("type", type);
-                                    info.put("poster_path", poster_path);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                String info_str = info.toString();
-                                editor.putString(id, info_str);
-                                editor.apply();
-                                menuItem.setTitle("Remove from Watchlist");
-                                Log.d("watchlist", "-" + editor);
+
                             }
                             else if (menuItem.getTitle().equals("Remove from Watchlist")) {
                                 Toast.makeText(view.getContext(), title + " was removed from Watchlist" , Toast.LENGTH_LONG).show();
 
                                 SharedPreferences sharedPref = mContext.getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.remove(id);
-                                editor.apply();
-                                menuItem.setTitle("Add to Watchlist");
+                                String prev = sharedPref.getString("list", "");
+                                try {
+                                    JSONArray prev_arr = new JSONArray(prev);
+                                    for (int i = 0; i < prev_arr.length(); i++) {
+                                        JSONObject obj = prev_arr.getJSONObject(i);
+                                        if (obj.getString("id").equals(id)) {
+                                            prev_arr.remove(i);
+                                            break;
+                                        }
+                                    }
+                                    editor.putString("list", prev_arr.toString());
+                                    editor.apply();
+                                    menuItem.setTitle("Add to Watchlist");
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                             else if (menuItem.getTitle().equals("Share on Facebook")) {
                                 if (mContext == null)

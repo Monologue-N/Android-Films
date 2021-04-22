@@ -71,39 +71,54 @@ public class WatchlistFragment extends Fragment {
         // traverse shared preferences
         SharedPreferences sharedPref = mContext.getSharedPreferences("watchlist", Context.MODE_PRIVATE);
 //        sharedPref.edit().clear().apply();
-        Log.d("sharedPref", "-" + sharedPref.getAll());
-        if (sharedPref.getAll() == null || sharedPref.getAll().isEmpty()) {
+        String currList = sharedPref.getString("list", "");
+        Log.d("3333sharedPref", "-" + currList);
+        if (currList == null || currList.isEmpty() || currList.equals("[]")) {
             TextView textView = view.findViewById(R.id.watchlist_hint);
             String hint = "Nothing saved to Watchlist";
             textView.setText(hint);
         } else {
-            Map<String, ?> keys = sharedPref.getAll();
 
-            for (Map.Entry<String, ?> entry : keys.entrySet()) {
-                Log.d("map values", entry.getKey() + ": " +
-                        entry.getValue().toString());
-                String id = entry.getKey();
-                String type;
-                String poster_path;
-                String info_str = entry.getValue().toString();
-                try {
-                    JSONObject obj = new JSONObject(info_str);
-                    type = obj.getString("type");
-                    poster_path = obj.getString("poster_path");
-                    watchlistItemArrayList.add(new SingleWatchlistItem(id, type, poster_path));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            try {
+                JSONArray currArray = new JSONArray(currList);
+                for (int i = currArray.length() - 1; i >= 0; i--) {
+                    JSONObject obj = currArray.getJSONObject(i);
+                    String id = obj.getString("id");
+                    String type = obj.getString("type");
+                    String poster_path = obj.getString("poster_path");
+                    String title = obj.getString("title");
+                    watchlistItemArrayList.add(new SingleWatchlistItem(id, type, poster_path, title));
                 }
+                RecyclerView recyclerView = view.findViewById(R.id.watchlist_recycler_view);
+                recyclerView.setHasFixedSize(true);
+
+                WatchlistAdapter adapter = new WatchlistAdapter(mContext, watchlistItemArrayList);
+                recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
+                recyclerView.setAdapter(adapter);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
 
-            RecyclerView recyclerView = view.findViewById(R.id.watchlist_recycler_view);
-            recyclerView.setHasFixedSize(true);
-
-            WatchlistAdapter adapter = new WatchlistAdapter(mContext, watchlistItemArrayList);
-            recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-            recyclerView.setAdapter(adapter);
-        }
+//            Map<String, ?> keys = sharedPref.getAll();
+//
+//            for (Map.Entry<String, ?> entry : keys.entrySet()) {
+//                Log.d("map values", entry.getKey() + ": " +
+//                        entry.getValue().toString());
+//                String id = entry.getKey();
+//                String type;
+//                String poster_path;
+//                String info_str = entry.getValue().toString();
+//                try {
+//                    JSONObject obj = new JSONObject(info_str);
+//                    type = obj.getString("type");
+//                    poster_path = obj.getString("poster_path");
+//                    watchlistItemArrayList.add(new SingleWatchlistItem(id, type, poster_path));
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+            }
+//        }
 
         return view;
     }
@@ -111,8 +126,8 @@ public class WatchlistFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("111onResume", "-" + isOnCreation);
         if (!isOnCreation) {
-//            allowRefresh = false;
             Log.d("111resume", "watchlist resumed");
             if (cxt == null)
                 return;

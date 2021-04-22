@@ -4,11 +4,13 @@ public class SingleWatchlistItem {
     String id;
     String type;
     String poster_path;
+    String title;
 
-    public SingleWatchlistItem(String id, String type, String poster_path) {
+    public SingleWatchlistItem(String id, String type, String poster_path, String title) {
         this.id = id;
         this.type = type;
         this.poster_path = poster_path;
+        this.title = title;
     }
 
     public String getId() {
@@ -35,4 +37,11 @@ public class SingleWatchlistItem {
         this.poster_path = poster_path;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

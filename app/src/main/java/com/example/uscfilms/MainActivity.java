@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 //        Fragment currentFragmentChild = navHostFragment.getChildFragmentManager().findFragmentByTag("WatchlistFragment");
         Fragment currentFragmentChild = navHostFragment.getChildFragmentManager().getFragments().get(0);
-        Log.d("111AllchildFrag", " " + navHostFragment.getChildFragmentManager());
+//        Log.d("111AllchildFrag", " " + navHostFragment.getChildFragmentManager());
         Log.d("111childFrag", " " + currentFragmentChild);
         Log.d("111findFrag", "-" + navHostFragment);
         FragmentTransaction fragmentTransaction = navHostFragment.getChildFragmentManager().beginTransaction();

@@ -95,7 +95,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
                 @Override
                 public void onClick(View v) {
                     Log.d("click", "clicked");
-                    Toast.makeText(v.getContext(), "On this click",  Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(v.getContext(), "On this click",  Toast.LENGTH_SHORT).show();
 
                     String id = (String) titleId.getText();
                     String type = (String) titleType.getText();

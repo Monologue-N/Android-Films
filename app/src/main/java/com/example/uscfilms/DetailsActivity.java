@@ -324,9 +324,22 @@ public class DetailsActivity extends AppCompatActivity {
 
         // check if the key exists
         SharedPreferences sharedPref = getSharedPreferences("watchlist", Context.MODE_PRIVATE);
-        String ifAdded = sharedPref.getString(id, "");
-        Log.d("checkadd", ifAdded);
-        added = (ifAdded != null && !ifAdded.isEmpty());
+        String prev = sharedPref.getString("list", "");
+
+        if (prev != null && !prev.isEmpty()) {
+            try {
+                JSONArray prev_arr = new JSONArray(prev);
+                for (int i = 0; i < prev_arr.length(); i++) {
+                    JSONObject obj = prev_arr.getJSONObject(i);
+                    if (obj.getString("id").equals(id)) {
+                        added = true;
+                        break;
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         if (added) {
             // already added to watchlist
@@ -346,13 +359,28 @@ public class DetailsActivity extends AppCompatActivity {
                 // remove
                 if (added) {
                     Toast.makeText(v.getContext(), title + " was removed from Watchlist" , Toast.LENGTH_LONG).show();
-
                     SharedPreferences sharedPref = getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.remove(id);
-                    editor.apply();
-                    addToWatchListBtn.setImageResource(R.drawable.ic_baseline_add_circle_outline_24);
-                    added = false;
+
+                    String prev = sharedPref.getString("list", "");
+                    try {
+                        JSONArray prev_arr = new JSONArray(prev);
+                        for (int i = 0; i < prev_arr.length(); i++) {
+                            JSONObject obj = prev_arr.getJSONObject(i);
+                            if (obj.getString("id").equals(id)) {
+                                prev_arr.remove(i);
+                                break;
+                            }
+                        }
+                        editor.putString("list", prev_arr.toString());
+                        editor.apply();
+                        addToWatchListBtn.setImageResource(R.drawable.ic_baseline_add_circle_outline_24);
+                        added = false;
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
                 // add
@@ -361,25 +389,47 @@ public class DetailsActivity extends AppCompatActivity {
                     SharedPreferences sharedPref = getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
 
-                    String nothing = "{}";
-                    JSONObject info = null;
+                    String prev = sharedPref.getString("list", "");
                     try {
-                        info = new JSONObject(nothing);
+                        JSONArray prevArray;
+                        if (prev != null && !prev.isEmpty()) {
+                            Log.d("222watchlist", "-" + prev);
+                            prevArray = new JSONArray(prev);
+                            Log.d("222watchlist", "-" + prevArray);
+                        }
+                        else {
+                            prevArray = new JSONArray();
+                        }
+
+                        String nothing = "{}";
+                        JSONObject info = null;
+                        try {
+                            info = new JSONObject(nothing);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            info.put("id", id);
+                            info.put("type", finalType);
+                            info.put("poster_path", poster_path);
+                            info.put("title", title);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        prevArray.put(info);
+//                                    JSONObject info_obj = new JSONObject();
+//                                    info_obj.put("info", prevArray);
+
+                        editor.putString("list", prevArray.toString());
+                        editor.apply();
+                        addToWatchListBtn.setImageResource(R.drawable.ic_baseline_remove_circle_outline_24);
+                        added = true;
+                        Log.d("watchlist", "-" + editor);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    try {
-                        info.put("type", finalType);
-                        info.put("poster_path", poster_path);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    String info_str = info.toString();
-                    editor.putString(id, info_str);
-                    editor.apply();
-                    addToWatchListBtn.setImageResource(R.drawable.ic_baseline_remove_circle_outline_24);
-                    added = true;
-                    Log.d("watchlist", "-" + editor);
                 }
 
             }

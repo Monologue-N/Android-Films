@@ -110,7 +110,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
             watchlist_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "On this click",  Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(v.getContext(), "On this click",  Toast.LENGTH_SHORT).show();
 
                     String id = (String) watchlist_id.getText();
                     String type = (String) watchlist_type.getText();
@@ -123,12 +123,30 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
             watchlist_remove_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(),  " was removed from Watchlist" , Toast.LENGTH_LONG).show();
                     SharedPreferences sharedPref = mContext.getSharedPreferences("watchlist", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
+                    String prev = sharedPref.getString("list", "");
                     String id = (String) watchlist_id.getText();
-                    editor.remove(id);
-                    editor.apply();
+                    try {
+                        JSONArray prev_arr = new JSONArray(prev);
+                        for (int i = 0; i < prev_arr.length(); i++) {
+                            JSONObject obj = prev_arr.getJSONObject(i);
+                            if (obj.getString("id").equals(id)) {
+                                Log.d("2222", "id is " + id);
+                                Log.d("2222", "??" + obj.getString("id").equals(id));
+                                String title = obj.getString("title");
+                                prev_arr.remove(i);
+                                Toast.makeText(view.getContext(),  title + " was removed from Watchlist" , Toast.LENGTH_LONG).show();
+
+                                break;
+                            }
+                        }
+                        editor.putString("list", prev_arr.toString());
+                        editor.apply();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
 
                     if (mContext == null)
