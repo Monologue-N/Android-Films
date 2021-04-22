@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -246,12 +248,12 @@ public class DetailsActivity extends AppCompatActivity {
 
                         String rating = obj.getJSONObject("author_details").getString("rating");
                         Log.d("rating", ":" + rating);
-//                        if (rating != null) {
-//                            rating = Integer.toString(Integer.parseInt(rating) / 2) + "/5";
-//                        }
-//                        else {
-                            rating = "0/5";
-//                        }
+                        if (rating != null && !rating.equals("null")) {
+                            rating = Integer.toString(Integer.parseInt(rating) / 2) + "/5";
+                        }
+                        else {
+                            rating = "0";
+                        }
                         String content = obj.getString("content");
 
                         String creation = "by " + author + " on " + created_at;

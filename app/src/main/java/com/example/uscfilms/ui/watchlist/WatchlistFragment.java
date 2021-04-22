@@ -1,10 +1,13 @@
 package com.example.uscfilms.ui.watchlist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.AdapterListUpdateCallback;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,9 +17,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.uscfilms.MainActivity;
 import com.example.uscfilms.R;
 import com.example.uscfilms.adapter.RecommendedAdapter;
 import com.example.uscfilms.adapter.WatchlistAdapter;
@@ -32,6 +37,8 @@ import java.util.Map;
 
 
 public class WatchlistFragment extends Fragment {
+    private Context cxt;
+    boolean allowRefresh = true;
 
     public WatchlistFragment() {
         // Required empty public constructor
@@ -55,6 +62,7 @@ public class WatchlistFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_watchlist, container, false);
         Context mContext = view.getContext();
+        cxt = mContext;
 
         ArrayList<SingleWatchlistItem> watchlistItemArrayList = new ArrayList<>();
 
@@ -66,12 +74,11 @@ public class WatchlistFragment extends Fragment {
             TextView textView = view.findViewById(R.id.watchlist_hint);
             String hint = "Nothing saved to Watchlist";
             textView.setText(hint);
-        }
-        else {
-            Map<String,?> keys = sharedPref.getAll();
+        } else {
+            Map<String, ?> keys = sharedPref.getAll();
 
-            for(Map.Entry<String,?> entry : keys.entrySet()){
-                Log.d("map values",entry.getKey() + ": " +
+            for (Map.Entry<String, ?> entry : keys.entrySet()) {
+                Log.d("map values", entry.getKey() + ": " +
                         entry.getValue().toString());
                 String id = entry.getKey();
                 String type;
@@ -96,9 +103,8 @@ public class WatchlistFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         }
 
-
-
-
         return view;
     }
+
+
 }

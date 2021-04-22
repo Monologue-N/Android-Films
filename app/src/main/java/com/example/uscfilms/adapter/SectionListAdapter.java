@@ -187,8 +187,6 @@ class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter
         }
 
 
-
-
 //        public void switchContent(int id, Fragment fragment) {
 //            if (mContext == null)
 //                return;
