@@ -28,6 +28,7 @@ import com.example.uscfilms.adapter.CastAdapter;
 import com.example.uscfilms.adapter.RecommendedAdapter;
 import com.example.uscfilms.adapter.RecyclerViewDataAdapter;
 import com.example.uscfilms.adapter.ReviewsAdapter;
+import com.example.uscfilms.decoration.SpacesItemDecoration;
 import com.example.uscfilms.model.SingleCard;
 import com.example.uscfilms.model.SingleCast;
 import com.example.uscfilms.model.SingleReview;
@@ -267,6 +268,8 @@ public class DetailsActivity extends AppCompatActivity {
                     }
                 }
                 RecyclerView recyclerView = findViewById(R.id.reviews_recycler_view);
+                int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.review_margin);
+                recyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
                 recyclerView.setHasFixedSize(true);
                 ReviewsAdapter adapter = new ReviewsAdapter(cxt, reviewList);
                 recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.VERTICAL, false));
