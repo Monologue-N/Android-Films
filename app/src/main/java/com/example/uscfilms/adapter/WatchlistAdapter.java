@@ -129,15 +129,19 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
 
     @Override
     public void onRowSelected(SingleItemRowHolder myViewHolder) {
-        myViewHolder.rowView.setBackgroundColor(Color.TRANSPARENT);
-        CardView cardView = (CardView) myViewHolder.rowView;
-        cardView.setRadius(35);
-        Log.d("radius", "-" + cardView.getRadius());
+//        CardView cardView = (CardView) myViewHolder.rowView;
+//        cardView.setRadius(35);
+//        Log.d("radius", "-" + cardView.getRadius());
+//        myViewHolder.rowView.setBackgroundColor(Color.TRANSPARENT);
+
+//        myViewHolder.rowView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.rounded));
     }
 
     @Override
     public void onRowClear(SingleItemRowHolder myViewHolder) {
-        myViewHolder.rowView.setBackgroundColor(Color.TRANSPARENT);
+//        myViewHolder.rowView.setBackgroundColor(Color.TRANSPARENT);
+//        myViewHolder.rowView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.rounded));
+
     }
 
 
