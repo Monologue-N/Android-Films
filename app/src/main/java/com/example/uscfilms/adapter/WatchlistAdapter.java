@@ -62,7 +62,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
         SingleWatchlistItem singleItem = watchlist.get(i);
 
         holder.watchlist_id.setText(singleItem.getId());
-        holder.watchlist_type.setText(singleItem.getType());
+        holder.watchlist_type.setText(singleItem.getType().toUpperCase());
         Log.d("showType", "" + singleItem.getType());
         Picasso.get().load(singleItem.getPoster_path()).into(holder.watchlist_img);
         holder.watchlist_img_mask.setBackground(Drawable.createFromPath("@drawable/gradient"));
