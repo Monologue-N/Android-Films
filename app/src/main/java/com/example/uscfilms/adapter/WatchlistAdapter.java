@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -127,14 +129,15 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
 
     @Override
     public void onRowSelected(SingleItemRowHolder myViewHolder) {
-        myViewHolder.rowView.setBackgroundColor(Color.GRAY);
-
+        myViewHolder.rowView.setBackgroundColor(Color.TRANSPARENT);
+        CardView cardView = (CardView) myViewHolder.rowView;
+        cardView.setRadius(35);
+        Log.d("radius", "-" + cardView.getRadius());
     }
 
     @Override
     public void onRowClear(SingleItemRowHolder myViewHolder) {
         myViewHolder.rowView.setBackgroundColor(Color.TRANSPARENT);
-
     }
 
 

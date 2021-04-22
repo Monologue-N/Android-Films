@@ -4,11 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    android:layout_marginBottom="?attr/actionBarSize"
     android:backgroundTint="@color/dark_blue"
     xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     >
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -44,6 +42,14 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:orientation="vertical" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/search_hint"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:gravity="center"/>
 
 
 </LinearLayout>

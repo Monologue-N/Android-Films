@@ -58,8 +58,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         String type_year = singleSearchResult.getType() + "(" + singleSearchResult.getYear() + ")";
 
         reviewHolder.search_type_year.setText(type_year);
+        reviewHolder.search_type_year.bringToFront();
         reviewHolder.search_title.setText(singleSearchResult.getTitle());
+        reviewHolder.search_title.bringToFront();
         reviewHolder.search_rating.setText(singleSearchResult.getRating());
+        reviewHolder.search_rating.bringToFront();
 
     }
 

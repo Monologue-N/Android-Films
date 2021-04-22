@@ -81,27 +81,33 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onSuccess(JSONArray res) throws JSONException, ParseException {
                         Log.d("SearchResult", "" + res);
-                        int length = Math.min(20, res.length());
-                        for (int i = 0; i < length; i++) {
-                            if (res.getJSONObject(i) != null) {
-                                JSONObject obj = res.getJSONObject(i);
-                                String id = obj.getString("id");
-                                String backdrop_path = "https://image.tmdb.org/t/p/w500" + obj.getString("backdrop_path");
-                                String type = obj.getString("type");
-                                String year = obj.getString("year");
-                                String title = obj.getString("title");
-                                String rating = obj.getString("rating");
-                                searchList.add(new SingleSearchResult(id, backdrop_path, type, year, title, rating));
-                            }
+                        if (res == null && res.length() == 0) {
+                            TextView textView = view.findViewById(R.id.search_hint);
+                            textView.setText("No result found.");
                         }
-                        RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
-                        SearchResultAdapter adapter = new SearchResultAdapter(mContext, searchList);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                        recyclerView.setAdapter(adapter);
+                        else {
+                            int length = Math.min(20, res.length());
+                            for (int i = 0; i < length; i++) {
+                                if (res.getJSONObject(i) != null) {
+                                    JSONObject obj = res.getJSONObject(i);
+                                    String id = obj.getString("id");
+                                    String backdrop_path = "https://image.tmdb.org/t/p/w500" + obj.getString("backdrop_path");
+                                    String type = obj.getString("type");
+                                    String year = obj.getString("year");
+                                    String title = obj.getString("title");
+                                    String rating = obj.getString("rating");
+                                    searchList.add(new SingleSearchResult(id, backdrop_path, type, year, title, rating));
+                                }
+                            }
+                            RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+                            SearchResultAdapter adapter = new SearchResultAdapter(mContext, searchList);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                            recyclerView.setAdapter(adapter);
+
+                        }
 
                     }
                 }, mContext, newText);
-
 
                 return false;
             }
