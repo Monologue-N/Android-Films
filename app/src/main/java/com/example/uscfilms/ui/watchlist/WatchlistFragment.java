@@ -39,6 +39,7 @@ import java.util.Map;
 public class WatchlistFragment extends Fragment {
     private Context cxt;
     boolean allowRefresh = true;
+    boolean isOnCreation = false;
 
     public WatchlistFragment() {
         // Required empty public constructor
@@ -63,6 +64,7 @@ public class WatchlistFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_watchlist, container, false);
         Context mContext = view.getContext();
         cxt = mContext;
+        isOnCreation = true;
 
         ArrayList<SingleWatchlistItem> watchlistItemArrayList = new ArrayList<>();
 
@@ -106,5 +108,19 @@ public class WatchlistFragment extends Fragment {
         return view;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isOnCreation) {
+//            allowRefresh = false;
+            Log.d("111resume", "watchlist resumed");
+            if (cxt == null)
+                return;
+            if (cxt instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) cxt;
+                mainActivity.onlyRefreshWatchlist();
+            }
+        }
+        isOnCreation = false;
+    }
 }

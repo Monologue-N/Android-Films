@@ -138,6 +138,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
                         mainActivity.refreshWatchlist();
                     }
 
+
                 }
             });
 

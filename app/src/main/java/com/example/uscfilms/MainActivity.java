@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.uscfilms.service.Details;
+import com.example.uscfilms.service.GetVideosCallback;
 import com.example.uscfilms.service.VolleyCallback2;
 import com.example.uscfilms.ui.details.DetailsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,7 +34,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "lifecycle";
     private NavController navController;
-    private String key;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +101,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToFB(String id, String type) {
         Log.d("tmdb", "I am here in fb");
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com"));
+        mContext = getApplicationContext();
+
+        String fbURL = "https://www.facebook.com/sharer/sharer.php?u=" + "https://www.themoviedb.org/" + type + "/" + id ;
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(fbURL));
         startActivity(i);
+
+//        getVideos(mContext, id, type);
+//        getVideos(new GetVideosCallback() {
+//            @Override
+//            public void onSuccess(String key) {
+//                Log.d("tmdb", "key is " + key );
+//                String fbURL = "https://www.facebook.com/sharer/sharer.php?u=https://youtu.be/" + key ;
+//                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(fbURL));
+//                startActivity(i);
+//            }
+//        }, mContext, id, type);
     }
     public void goToTwitter(String id, String type) {
         Log.d("tmdb", "I am here in twitter");
+        String twitterURL = "https://twitter.com/intent/tweet?text=Check%20this%20out!%0D" + "https://www.themoviedb.org/" + type + "/" + id;
+//        https://www.youtube.com/watch?v={{ key }}%0D%0A%23USC%20%23CSCI571%20%23FightOn";
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.twitter.com"));
         startActivity(i);
     }
@@ -112,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshWatchlist() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        Fragment currentFragmentChild = navHostFragment.getChildFragmentManager().findFragmentById(R.id.navigation_watchlist);
+//        Fragment currentFragmentChild = navHostFragment.getChildFragmentManager().getFragments().get(2);
+        Log.d("childFrag", " " + currentFragmentChild);
         Log.d("findFrag", "-" + currentFragment);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Log.d("findFragTrans", "-" + fragmentTransaction);
@@ -121,74 +142,81 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
     }
+    public void onlyRefreshWatchlist() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+//        Fragment currentFragmentChild = navHostFragment.getChildFragmentManager().findFragmentByTag("WatchlistFragment");
+        Fragment currentFragmentChild = navHostFragment.getChildFragmentManager().getFragments().get(0);
+        Log.d("111AllchildFrag", " " + navHostFragment.getChildFragmentManager());
+        Log.d("111childFrag", " " + currentFragmentChild);
+        Log.d("111findFrag", "-" + navHostFragment);
+        FragmentTransaction fragmentTransaction = navHostFragment.getChildFragmentManager().beginTransaction();
+        Log.d("111findFragTrans", "-" + fragmentTransaction);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refreshWatchlist();
+        fragmentTransaction.detach(currentFragmentChild);
+        fragmentTransaction.attach(currentFragmentChild);
+        fragmentTransaction.commit();
+
     }
 
-//    private void getVideos(Context cxt, String id, String type) {
-//        Details details = new Details();
-//        details.getDetails(new VolleyCallback2() {
-//            @Override
-//            public void onSuccess(JSONObject resObj) throws JSONException {
-//                Log.d("getVideosRes", "res: " + resObj);
-//                JSONArray res = resObj.getJSONArray("results");
-//                if (res != null) {
-//                    if (res.length() != 0) {
-//                        Log.d("getVideos", "res is not null");
-//
-//                        for (int i = 0; i < res.length(); i++) {
-//                            JSONObject obj = res.getJSONObject(i);
-//                            Log.d("getVideosTrailer", "obj:" + obj);
-//                            String type = obj.getString("type");
-//                            Log.d("getVideosTrailer", "type:" + type);
-//
-//                            if ((type.equals("Trailer")) && obj.getString("key") != null) {
-//                                key = obj.getString("key");
-//                                Log.d("getVideosTrailer", key);
-//                                break;
-//                            }
-//                        }
-//                        if (key == null) {
-//                            for (int i = 0; i < res.length(); i++) {
-//                                JSONObject obj = res.getJSONObject(i);
-//                                Log.d("getVideosTeaser", "obj:" + obj);
-//                                String type = obj.getString("type");
-//                                Log.d("getVideosTeaser", "type:" + type);
-//                                if ((type.equals("Teaser")) && obj.getString("key") != null) {
-//                                    key = obj.getString("key");
-//                                    Log.d("getVideosTeaser", key);
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                if (key != null) {
-//                    YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
-//                    getLifecycle().addObserver(youTubePlayerView);
-//                    Log.d("getVideos", key);
-//                    youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-//                        @Override
-//                        public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-//                            Log.d("youtubePlayer", "loading?");
-//                            youTubePlayer.loadVideo(key, 0);
-//                            Log.d("youtubePlayer", "loaded?");
-//
-//                        }
-//                    });
-//                } else {
-//                    YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
-//                    youTubePlayerView.setVisibility(View.GONE);
-//                    ImageView imgHolder = findViewById(R.id.img_holder);
-//                    Picasso.get().load(backdrop_url).into(imgHolder);
-//                    Log.d("novideo", "url: " + backdrop_url);
-//                    imgHolder.bringToFront();
-//                }
-//
-//            }
-//        }, cxt, id, type, "videos");
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        boolean flag = true;
+//        if (flag) {
+//            flag = false;
+//            refreshWatchlist();
+//        }
 //    }
+
+
+    private void getVideos( Context cxt, String id, String type) {
+        Details details = new Details();
+        details.getDetails(new VolleyCallback2() {
+            @Override
+            public void onSuccess(JSONObject resObj) throws JSONException {
+                Log.d("getVideosRes", "res: " + resObj);
+                JSONArray res = resObj.getJSONArray("results");
+                String key = null;
+                if (res != null) {
+                    if (res.length() != 0) {
+                        Log.d("getVideos", "res is not null");
+
+                        for (int i = 0; i < res.length(); i++) {
+                            JSONObject obj = res.getJSONObject(i);
+                            Log.d("getVideosTrailer", "obj:" + obj);
+                            String type = obj.getString("type");
+                            Log.d("getVideosTrailer", "type:" + type);
+
+                            if ((type.equals("Trailer")) && obj.getString("key") != null) {
+                                key = obj.getString("key");
+                                Log.d("getVideosTrailer", key);
+                                break;
+                            }
+                        }
+                        if (key == null) {
+                            for (int i = 0; i < res.length(); i++) {
+                                JSONObject obj = res.getJSONObject(i);
+                                Log.d("getVideosTeaser", "obj:" + obj);
+                                String type = obj.getString("type");
+                                Log.d("getVideosTeaser", "type:" + type);
+                                if ((type.equals("Teaser")) && obj.getString("key") != null) {
+                                    key = obj.getString("key");
+                                    Log.d("getVideosTeaser", key);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                Log.d("tmdb", "key is " + key );
+                String fbURL = "https://www.facebook.com/sharer/sharer.php?u=https://youtu.be/" + key ;
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(fbURL));
+                startActivity(i);
+
+            }
+        }, cxt, id, type, "videos");
+    }
+
+
+
 }
