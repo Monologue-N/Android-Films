@@ -87,11 +87,41 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(watchlist, i, i + 1);
             }
+
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
                 Collections.swap(watchlist, i, i - 1);
             }
         }
+        // change sharedPref data
+        SharedPreferences sharedPref = mContext.getSharedPreferences("watchlist", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        String prev = sharedPref.getString("list", "");
+
+        try {
+            JSONArray prev_arr = new JSONArray(prev);
+            int prevIdx = prev_arr.length() - fromPosition - 1;
+            int nxtIdx = prev_arr.length() - toPosition - 1;
+            Log.d("4444", "" + fromPosition);
+            Log.d("4444", "" + toPosition);
+
+            JSONObject obj = prev_arr.getJSONObject(prevIdx);
+            prev_arr.remove(prevIdx);
+//            prev_arr.put(prev_arr.getJSONObject(prev_arr.length() - 1));
+            for (int j = prev_arr.length(); j > nxtIdx; j--) {
+                Log.d("4444obj", "-" + prev_arr.get(j - 1));
+                prev_arr.put(j, prev_arr.getJSONObject(j - 1));
+            }
+            prev_arr.put(nxtIdx, obj);
+
+
+            editor.putString("list", prev_arr.toString());
+            editor.apply();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -173,7 +203,6 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Sing
                                 String title = obj.getString("title");
                                 prev_arr.remove(i);
                                 Toast.makeText(view.getContext(),  title + " was removed from Watchlist" , Toast.LENGTH_SHORT).show();
-
                                 break;
                             }
                         }
