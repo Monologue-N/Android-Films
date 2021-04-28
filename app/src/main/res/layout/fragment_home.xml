@@ -51,9 +51,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:fontFamily="sans-serif"
                 android:text="USC Films"
                 android:textColor="@color/white"
-                android:textSize="28dp" />
+                android:textSize="28dp"
+                android:textStyle="bold"/>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
@@ -75,7 +77,6 @@
         android:layout_height="match_parent">
 
     </androidx.viewpager.widget.ViewPager>
-
 
 
 </LinearLayout>

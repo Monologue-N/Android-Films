@@ -17,6 +17,24 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="SearchViewStyle" parent="ThemeOverlay.AppCompat.Light">
+        <!--change color of text color-->
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- change color of icon-->
+        <item name="android:textColorSecondary">@color/white</item>
+        <!-- change color of hint-->
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:queryBackground">@android:color/transparent</item>
+        <item name="android:submitBackground">@android:color/transparent</item>
+
+    </style>
+
+    <style name="Theme.USCFilms.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
+        <item name="colorPrimaryDark">@color/dark_blue</item>
+    </style>
+
 <!--    <style name="Theme.USCFilms.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>-->
 <!--    <style name="Theme.USCFilms.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"></style>-->
 </resources>

@@ -73,8 +73,11 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
+
         viewPager = view.findViewById(R.id.view_pager);
         tabLayout = view.findViewById(R.id.tab_layout);
 //        NavigationView navView = view.findViewById(R.id.home_nav_view);
@@ -83,6 +86,7 @@ public class HomeFragment extends Fragment {
 //        navController = navHostFragment.getNavController();
 //        NavigationUI.setupWithNavController(navView, navController);
 //        NavigationUI.setupActionBarWithNavController((AppCompatActivity) getActivity(), navController);
+
 
         return view;
 

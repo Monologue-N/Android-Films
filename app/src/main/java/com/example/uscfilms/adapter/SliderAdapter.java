@@ -2,13 +2,16 @@ package com.example.uscfilms.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.uscfilms.MainActivity;
 import com.example.uscfilms.R;
 import com.bumptech.glide.Glide;
 import com.example.uscfilms.model.SliderData;
@@ -25,10 +28,12 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
     // list for storing urls of images.
     private final List<SliderData> mSliderItems;
+    private final Context mContext;
 
     // Constructor
     public SliderAdapter(Context context, ArrayList<SliderData> sliderDataArrayList) {
         this.mSliderItems = sliderDataArrayList;
+        this.mContext = context;
     }
 
     // We are inflating the slider_layout
@@ -60,6 +65,10 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
                 .fitCenter()
                 .apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 5)))
                 .into(viewHolder.imageViewBackgroundBlur);
+
+        viewHolder.textView.setText(sliderItem.getId());
+        viewHolder.textViewType.setText(sliderItem.getType());
+
     }
 
     // this method will return
@@ -69,19 +78,48 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         return mSliderItems.size();
     }
 
-    static class SliderAdapterViewHolder extends SliderViewAdapter.ViewHolder {
+    // previous static, change to non-static
+    class SliderAdapterViewHolder extends SliderViewAdapter.ViewHolder {
         // Adapter class for initializing
         // the views of our slider view.
         View itemView;
         ImageView imageViewBackground;
         ImageView imageViewBackgroundBlur;
+        TextView textView;
+        TextView textViewType;
 
         public SliderAdapterViewHolder(View itemView) {
             super(itemView);
             imageViewBackground = itemView.findViewById(R.id.myimage);
             imageViewBackgroundBlur = itemView.findViewById(R.id.myimageBlur);
+            textView = itemView.findViewById(R.id.sliderId);
+            textViewType = itemView.findViewById(R.id.sliderType);
+
 
             this.itemView = itemView;
+
+            itemView.setClickable(true);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("click", "clicked on slider");
+                    String id = (String) textView.getText();
+                    String type = (String) textViewType.getText();
+                    switchContent(id, type);
+                }
+            });
+        }
+    }
+
+    private void switchContent(String id, String type) {
+        if (mContext == null)
+            return;
+        if (mContext instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) mContext;
+            Log.d("getId0", id);
+            Log.d("getId0", "type: " + type);
+            mainActivity.switchContent(id, type);
         }
     }
 }
