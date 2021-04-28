@@ -79,14 +79,19 @@ public class DetailsActivity extends AppCompatActivity {
     private boolean added = false;
 
 
-    private void getDetails(Context cxt, String id, String type) {
+    private void getDetails(Context cxt, String id, String type, Activity activity) {
         Details details = new Details();
         details.getDetails(new VolleyCallback2() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onSuccess(JSONObject res) throws JSONException {
                 // fetch data
-                backdrop_url = "https://image.tmdb.org/t/p/w500" + res.getString("backdrop_path");
+                if (res.getString("backdrop_path").equals("null") || res.getString("backdrop_path").isEmpty()) {
+                    backdrop_url = "https://bytes.usc.edu/cs571/s21_JSwasm00/hw/HW6/imgs/movie-placeholder.jpg";
+                }
+                else {
+                    backdrop_url = "https://image.tmdb.org/t/p/w500" + res.getString("backdrop_path");
+                }
                 poster_path = "https://image.tmdb.org/t/p/w500" + res.getString("poster_path");
                 if (type.equals("movie")) {
                     title = res.getString("title");
@@ -124,13 +129,13 @@ public class DetailsActivity extends AppCompatActivity {
                 yearText.setText(year);
                 posterPathText.setText(poster_path);
 
-                getVideos(cxt, id, type);
+                getVideos(cxt, id, type, activity);
 
             }
         }, cxt, id, type, "details");
     }
 
-    private void getVideos(Context cxt, String id, String type) {
+    private void getVideos(Context cxt, String id, String type, Activity activity) {
         Details details = new Details();
         details.getDetails(new VolleyCallback2() {
             @Override
@@ -189,6 +194,8 @@ public class DetailsActivity extends AppCompatActivity {
                             Log.d("novideo", "url: " + backdrop_url);
                             imgHolder.bringToFront();
                         }
+
+                        getCast(cxt, id, type, activity);
 
             }
         }, cxt, id, type, "videos");
@@ -296,6 +303,8 @@ public class DetailsActivity extends AppCompatActivity {
                     ReviewsAdapter adapter = new ReviewsAdapter(cxt, reviewList, activity);
                     recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.VERTICAL, false));
                     recyclerView.setAdapter(adapter);
+
+                    getRecommended(cxt, id, type, activity);
                 }
             }
         }, cxt, id, type, "reviews");
@@ -324,7 +333,15 @@ public class DetailsActivity extends AppCompatActivity {
                         if (res.getJSONObject(i) != null) {
                             JSONObject obj = res.getJSONObject(i);
                             String id = obj.getString("id");
-                            String imgURL = "https://image.tmdb.org/t/p/w500" + obj.getString("poster_path");
+                            String imgURL = "";
+
+                            if (obj.getString("poster_path").equals("null") || obj.getString("poster_path").isEmpty()) {
+                                imgURL = "https://cinemaone.net/images/movie_placeholder.png";
+                            }
+                            else {
+                                imgURL = "https://image.tmdb.org/t/p/w500" + obj.getString("poster_path");
+
+                            }
                             Log.d("Recommended", "img: " + imgURL);
                             String title;
                             title = (type.equals("movie")) ? obj.getString("title") : obj.getString("name");
@@ -336,6 +353,9 @@ public class DetailsActivity extends AppCompatActivity {
                     RecommendedAdapter adapter = new RecommendedAdapter(cxt, cardList, activity);
                     recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.HORIZONTAL, false));
                     recyclerView.setAdapter(adapter);
+
+                    View layout = findViewById(R.id.layout_view3);
+                    layout.setVisibility(View.GONE);
                 }
             }
         }, cxt, type, "recommended", id);
@@ -349,6 +369,9 @@ public class DetailsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        View layout = findViewById(R.id.layout_view3);
+        layout.setVisibility(View.VISIBLE);
 
 
         Context cxt = getApplicationContext();
@@ -500,10 +523,9 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-        getDetails(cxt, id, type);
-        getCast(cxt, id, type, activity);
-        getRecommended(cxt, id, type, activity);
-
+        getDetails(cxt, id, type, activity);
+//        getCast(cxt, id, type, activity);
+//        getRecommended(cxt, id, type, activity);
 
     }
 

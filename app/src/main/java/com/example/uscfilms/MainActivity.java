@@ -78,30 +78,30 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d("hcc", "I am here after commit");
 
 //        ProgressBar spinner;
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-//        spinner = (ProgressBar)findViewById(R.id.pBar);
-//        spinner.setVisibility(View.VISIBLE);
-        navView.setVisibility(View.GONE);
-        View layout = findViewById(R.id.layout_view);
-        layout.setVisibility(View.VISIBLE);
+//        BottomNavigationView navView = findViewById(R.id.nav_view);
+////        spinner = (ProgressBar)findViewById(R.id.pBar);
+////        spinner.setVisibility(View.VISIBLE);
+//        navView.setVisibility(View.GONE);
+//        View layout = findViewById(R.id.layout_view);
+//        layout.setVisibility(View.VISIBLE);
 
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("type", type);
         startActivity(intent);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        ProgressBar spinner;
-//        spinner = (ProgressBar)findViewById(R.id.pBar);
-//        spinner.setVisibility(View.GONE);
-        View layout = findViewById(R.id.layout_view);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        layout.setVisibility(View.GONE);
-        navView.setVisibility(View.VISIBLE);
-    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+////        ProgressBar spinner;
+////        spinner = (ProgressBar)findViewById(R.id.pBar);
+////        spinner.setVisibility(View.GONE);
+//        View layout = findViewById(R.id.layout_view);
+//        BottomNavigationView navView = findViewById(R.id.nav_view);
+//        layout.setVisibility(View.GONE);
+//        navView.setVisibility(View.VISIBLE);
+//    }
 
 //    @Override
 //    public void onBackPressed() {

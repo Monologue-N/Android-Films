@@ -67,6 +67,13 @@ public class SearchFragment extends Fragment {
 
         SearchView searchView = view.findViewById(R.id.search_tool_bar);
         searchView.setBackgroundColor(Color.TRANSPARENT);
+//        searchView.setIconifiedByDefault(true);
+//        searchView.setFocusable(true);
+//        searchView.setIconified(false);
+        searchView.requestFocusFromTouch();
+
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String newText) {

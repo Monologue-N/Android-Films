@@ -7,7 +7,7 @@
     android:id="@+id/review_card">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="390dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/review_card"
@@ -59,7 +59,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:ellipsize="end"
-            android:maxLines="3" />
+            android:maxLines="3"
+            android:textSize="18sp"/>
 
         <TextView
             android:layout_width="match_parent"
