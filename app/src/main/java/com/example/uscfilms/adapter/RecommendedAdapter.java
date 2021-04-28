@@ -1,6 +1,8 @@
 package com.example.uscfilms.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -37,10 +39,12 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
     private Context mContext;
     final static String TAG = "[RA] ";
     private int idx;
+    Activity mActivity;
 
-    public RecommendedAdapter(Context context, ArrayList<SingleCard> itemsList) {
+    public RecommendedAdapter(Context context, ArrayList<SingleCard> itemsList, Activity activity) {
         this.itemsList = itemsList;
         this.mContext = context;
+        this.mActivity = activity;
     }
 
     @Override
@@ -102,24 +106,17 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
                     String type = (String) titleType.getText();
                     Log.d("getId", id);
                     Log.d("getId", "type: " + type);
-                    switchContent(id, type);
-                    Log.d("itemlist", String.valueOf(i));
+                    Intent intent = new Intent(mActivity, DetailsActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("type", type);
+                    mActivity.startActivity(intent);
+
                 }
             });
 
 
         }
 
-        public void switchContent(String id, String type) {
-            if (mContext == null)
-                return;
-            if (mContext instanceof DetailsActivity) {
-                DetailsActivity detailsActivity = (DetailsActivity) mContext;
-                Log.d("getId2", id);
-                Log.d("getId2", "type: " + type);
-                detailsActivity.switchContent(id, type);
-            }
-        }
 
     }
 

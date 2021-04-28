@@ -11,16 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +73,8 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView genresText;
     private TextView yearText;
     private TextView posterPathText;
+
+    private Context mContext;
 
     private boolean added = false;
 
@@ -190,7 +195,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
 
-    public void getCast(Context cxt, String id, String type) {
+    public void getCast(Context cxt, String id, String type, Activity activity) {
         Details details = new Details();
         ArrayList<SingleCast> castList = new ArrayList<SingleCast>();
         details.getDetails(new VolleyCallback2() {
@@ -201,7 +206,14 @@ public class DetailsActivity extends AppCompatActivity {
                 for (int i = 0; i < length; i++) {
                     if (res.getJSONObject(i) != null) {
                         JSONObject obj = res.getJSONObject(i);
-                        String profile_path = "https://image.tmdb.org/t/p/w500/" + obj.getString("profile_path");
+                        String profile_path = "";
+                        if (obj.getString("profile_path").equals("null") || obj.getString("profile_path").isEmpty() || obj.getString("profile_path").equals("")) {
+                            profile_path = "https://bytes.usc.edu/cs571/s21_JSwasm00/hw/HW6/imgs/person-placeholder.png";
+                        }
+                        else {
+                            profile_path = "https://image.tmdb.org/t/p/w500/" + obj.getString("profile_path");
+
+                        }
                         String name = obj.getString("name");
                         String id = obj.getString("id");
                         castList.add(new SingleCast(profile_path, name, id));
@@ -214,14 +226,14 @@ public class DetailsActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(new GridLayoutManager(cxt, numberOfColumns));
                 recyclerView.setAdapter(adapter);
 
-                getReviews(cxt, id, type);
+                getReviews(cxt, id, type, activity);
 
             }
         }, cxt, id, type, "casts");
     }
 
 
-    public void getReviews(Context cxt, String id, String type) {
+    public void getReviews(Context cxt, String id, String type, Activity activity) {
         Log.d("reviews", ": getReviews creation" );
 
         Details details = new Details();
@@ -231,76 +243,100 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(JSONObject resObj) throws JSONException, ParseException {
                 JSONArray res = resObj.getJSONArray("results");
-                int length = Math.min(3, res.length());
-                for (int i = 0; i < length; i++) {
-                    Log.d("reviews", "res: " + res);
+                if (res == null) {
+                    TextView reviewsText = findViewById(R.id.reviews);
+                    reviewsText.setVisibility(View.GONE);
+                } else if (res.length() == 0) {
+                    TextView reviewsText = findViewById(R.id.reviews);
+                    reviewsText.setVisibility(View.GONE);
 
-                    if (res.getJSONObject(i) != null) {
-                        JSONObject obj = res.getJSONObject(i);
-                        String author = obj.getString("author");
-                        String created_at = obj.getString("created_at");
-                        // parse String to date
-                        String ISO_86_24H_FULL_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-                        SimpleDateFormat formatter = new SimpleDateFormat(ISO_86_24H_FULL_FORMAT);
-                        Date date = formatter.parse(created_at);
-                        // format date
-                        DateFormat df = new SimpleDateFormat("E, MMM dd yyyy");
-                        created_at = df.format(date);
+                } else {
+                    TextView reviewsText = findViewById(R.id.reviews);
+                    reviewsText.setVisibility(View.VISIBLE);
+
+                    int length = Math.min(3, res.length());
+                    for (int i = 0; i < length; i++) {
+                        Log.d("reviews", "res: " + res);
+
+                        if (res.getJSONObject(i) != null) {
+                            JSONObject obj = res.getJSONObject(i);
+                            String author = obj.getString("author");
+                            String created_at = obj.getString("created_at");
+                            // parse String to date
+                            String ISO_86_24H_FULL_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+                            SimpleDateFormat formatter = new SimpleDateFormat(ISO_86_24H_FULL_FORMAT);
+                            Date date = formatter.parse(created_at);
+                            // format date
+                            DateFormat df = new SimpleDateFormat("E, MMM dd yyyy");
+                            created_at = df.format(date);
 
 
-                        String rating = obj.getJSONObject("author_details").getString("rating");
-                        Log.d("rating", ":" + rating);
-                        if (rating != null && !rating.equals("null")) {
-                            rating = Integer.toString(Integer.parseInt(rating) / 2) + "/5";
+                            String rating = obj.getJSONObject("author_details").getString("rating");
+                            Log.d("rating", ":" + rating);
+                            if (rating != null && !rating.equals("null")) {
+                                rating = Integer.toString(Integer.parseInt(rating) / 2) + "/5";
+                            } else {
+                                rating = "0/5";
+                            }
+                            String content = obj.getString("content");
+
+                            String creation = "by " + author + " on " + created_at;
+
+                            Log.d("reviews", ": " + created_at);
+                            Log.d("reviews", ": " + author);
+                            Log.d("reviews", ": " + rating);
+
+                            reviewList.add(new SingleReview(creation, rating, content));
                         }
-                        else {
-                            rating = "0/5";
-                        }
-                        String content = obj.getString("content");
-
-                        String creation = "by " + author + " on " + created_at;
-
-                        Log.d("reviews", ": " + created_at);
-                        Log.d("reviews", ": " + author);
-                        Log.d("reviews", ": " + rating);
-
-                        reviewList.add(new SingleReview(creation, rating, content));
                     }
+                    RecyclerView recyclerView = findViewById(R.id.reviews_recycler_view);
+                    int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.review_margin);
+                    recyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+                    recyclerView.setHasFixedSize(true);
+                    ReviewsAdapter adapter = new ReviewsAdapter(cxt, reviewList, activity);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.VERTICAL, false));
+                    recyclerView.setAdapter(adapter);
                 }
-                RecyclerView recyclerView = findViewById(R.id.reviews_recycler_view);
-                int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.review_margin);
-                recyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
-                recyclerView.setHasFixedSize(true);
-                ReviewsAdapter adapter = new ReviewsAdapter(cxt, reviewList);
-                recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.VERTICAL, false));
-                recyclerView.setAdapter(adapter);
             }
         }, cxt, id, type, "reviews");
     }
 
-    public void getRecommended(Context cxt, String id, String type) {
+    public void getRecommended(Context cxt, String id, String type, Activity activity) {
         Medias medias = new Medias();
         ArrayList<SingleCard> cardList = new ArrayList<>();
         medias.getRecommended(new VolleyCallback() {
             @Override
             public void onSuccess(JSONArray res) throws JSONException, ParseException {
-                int length = Math.min(10, res.length());
-                for (int i = 0; i < length; i++) {
-                    if (res.getJSONObject(i) != null) {
-                        JSONObject obj = res.getJSONObject(i);
-                        String id = obj.getString("id");
-                        String imgURL = "https://image.tmdb.org/t/p/w500" + obj.getString("poster_path");
-                        Log.d("Recommended", "img: " + imgURL);
-                        String title;
-                        title = (type.equals("movie")) ? obj.getString("title") : obj.getString("name");
-                        cardList.add(new SingleCard(id, imgURL, title, type));
+
+                if (res == null) {
+                    TextView recommendedText = findViewById(R.id.recommended);
+                    recommendedText.setVisibility(View.GONE);
+                } else if (res.length() == 0) {
+                    TextView recommendedText = findViewById(R.id.recommended);
+                    recommendedText.setVisibility(View.GONE);
+
+                } else {
+                    TextView recommendedText = findViewById(R.id.recommended);
+                    recommendedText.setVisibility(View.VISIBLE);
+
+                    int length = Math.min(10, res.length());
+                    for (int i = 0; i < length; i++) {
+                        if (res.getJSONObject(i) != null) {
+                            JSONObject obj = res.getJSONObject(i);
+                            String id = obj.getString("id");
+                            String imgURL = "https://image.tmdb.org/t/p/w500" + obj.getString("poster_path");
+                            Log.d("Recommended", "img: " + imgURL);
+                            String title;
+                            title = (type.equals("movie")) ? obj.getString("title") : obj.getString("name");
+                            cardList.add(new SingleCard(id, imgURL, title, type));
+                        }
                     }
+                    RecyclerView recyclerView = findViewById(R.id.recommended_recycler_view);
+                    recyclerView.setHasFixedSize(true);
+                    RecommendedAdapter adapter = new RecommendedAdapter(cxt, cardList, activity);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.HORIZONTAL, false));
+                    recyclerView.setAdapter(adapter);
                 }
-                RecyclerView recyclerView = findViewById(R.id.recommended_recycler_view);
-                recyclerView.setHasFixedSize(true);
-                RecommendedAdapter adapter = new RecommendedAdapter(cxt, cardList);
-                recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.HORIZONTAL, false));
-                recyclerView.setAdapter(adapter);
             }
         }, cxt, type, "recommended", id);
     }
@@ -314,7 +350,9 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+
         Context cxt = getApplicationContext();
+        Activity activity = this;
         String id = getIntent().getStringExtra("id");
         String type = getIntent().getStringExtra("type");
         type = type.toLowerCase();
@@ -439,10 +477,50 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-        getDetails(cxt, id, type);
-        getCast(cxt, id, type);
-        getRecommended(cxt, id, type);
 
+        ImageView fbBtn = findViewById(R.id.fb);
+        ImageView twitterBtn = findViewById(R.id.twitter);
+
+        fbBtn.setClickable(true);
+        twitterBtn.setClickable(true);
+
+        String finalType1 = type;
+        fbBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToFB(id, finalType1);
+
+            }
+        });
+
+        twitterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToTwitter(id, finalType1);
+            }
+        });
+
+        getDetails(cxt, id, type);
+        getCast(cxt, id, type, activity);
+        getRecommended(cxt, id, type, activity);
+
+
+    }
+
+
+    public void goToFB(String id, String type) {
+        Log.d("tmdb", "I am here in fb");
+        mContext = getApplicationContext();
+
+        String fbURL = "https://www.facebook.com/sharer/sharer.php?u=" + "https://www.themoviedb.org/" + type + "/" + id ;
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(fbURL));
+        startActivity(i);
+    }
+    public void goToTwitter(String id, String type) {
+        Log.d("tmdb", "I am here in twitter");
+        String twitterURL = "https://twitter.com/intent/tweet?text=Check%20this%20out!%0D" + "https://www.themoviedb.org/" + type + "/" + id;
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.twitter.com"));
+        startActivity(i);
     }
 
     public void switchContent(String id, String type) {
@@ -454,11 +532,10 @@ public class DetailsActivity extends AppCompatActivity {
 
     public void switchToReview(String creation, String rating) {
         Intent intent = new Intent(this, ReviewActivity.class);
-        Log.d("switch", "to review");
+        Log.d("switch777", "to review");
         intent.putExtra("creation", creation);
         intent.putExtra("rating", rating);
 //        intent.putExtra("review", review);
         startActivity(intent);
     }
-
 }

@@ -34,11 +34,12 @@ public class Search {
                     @Override
                     public void onResponse(JSONObject response) {
                         res = null;
-                        try {
-                            res = response.getJSONArray("results");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                            try {
+                                res = response.getJSONArray("results");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                         Log.d(TAG, "getSearchResults: " + res);
 
                         try {

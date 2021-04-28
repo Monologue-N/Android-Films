@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.uscfilms.service.Details;
@@ -38,13 +39,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_USCFilms_Launcher);
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
 //        findViewById(R.id.nav_view).setVisibility(View.VISIBLE);
 
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(navView, navController);
@@ -72,10 +76,31 @@ public class MainActivity extends AppCompatActivity {
 ////      findViewById(R.id.nav_view).setVisibility(View.GONE);
 //
 //        Log.d("hcc", "I am here after commit");
+
+//        ProgressBar spinner;
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+//        spinner = (ProgressBar)findViewById(R.id.pBar);
+//        spinner.setVisibility(View.VISIBLE);
+        navView.setVisibility(View.GONE);
+        View layout = findViewById(R.id.layout_view);
+        layout.setVisibility(View.VISIBLE);
+
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("type", type);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        ProgressBar spinner;
+//        spinner = (ProgressBar)findViewById(R.id.pBar);
+//        spinner.setVisibility(View.GONE);
+        View layout = findViewById(R.id.layout_view);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        layout.setVisibility(View.GONE);
+        navView.setVisibility(View.VISIBLE);
     }
 
 //    @Override
@@ -215,6 +240,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }, cxt, id, type, "videos");
+    }
+
+
+
+    public void switchToReview(String creation, String rating) {
+        Intent intent = new Intent(this, ReviewActivity.class);
+        Log.d("switch777", "to review");
+        intent.putExtra("creation", creation);
+        intent.putExtra("rating", rating);
+//        intent.putExtra("review", review);
+        startActivity(intent);
     }
 
 

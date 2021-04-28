@@ -16,18 +16,20 @@ public class ReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
 
+        this.getSupportActionBar().hide();
+
         Context cxt = getApplicationContext();
         String creation = getIntent().getStringExtra("creation");
         String rating = getIntent().getStringExtra("rating");
-//        String review = getIntent().getStringExtra("review");
+        String review = getIntent().getStringExtra("review");
 
         creationText = findViewById(R.id.review_creation);
         ratingText = findViewById(R.id.review_rating);
-//        reviewText = findViewById(R.id.review_review);
+        reviewText = findViewById(R.id.review_review);
 
         creationText.setText(creation);
         ratingText.setText(rating);
-//        reviewText.setText(review);
+        reviewText.setText(review);
 
     }
 }

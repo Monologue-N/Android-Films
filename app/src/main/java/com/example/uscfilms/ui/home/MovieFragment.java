@@ -53,6 +53,10 @@ public class MovieFragment extends Fragment {
     }
 
     private void createNowPlayingMovies(Context cxt, View view) {
+
+        View layout = view.findViewById(R.id.layout_view1);
+        layout.setVisibility(View.VISIBLE);
+
         Medias medias = new Medias();
 
         // we are creating array list for storing our image urls.
@@ -143,6 +147,10 @@ public class MovieFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                 recyclerView.setAdapter(adapter);
 
+
+                View layout = view.findViewById(R.id.layout_view1);
+                layout.setVisibility(View.GONE);
+
             }
         }, cxt, type, "popular");
     }
@@ -155,6 +163,7 @@ public class MovieFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
 
         Context cxt = getActivity();
+
         createNowPlayingMovies(cxt, view);
 
         // make footer clickable

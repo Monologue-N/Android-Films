@@ -69,46 +69,136 @@ public class SearchFragment extends Fragment {
         searchView.setBackgroundColor(Color.TRANSPARENT);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String newText) {
+                if (newText.equals("") || newText == null) {
+                    TextView textView = view.findViewById(R.id.search_hint);
+                    textView.setVisibility(View.GONE);
+                    RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+                    recyclerView.setVisibility(View.GONE);
+                }
+                else {
+                    Search search = new Search();
+                    ArrayList<SingleSearchResult> searchList = new ArrayList<>();
+                    search.getSearchResults(new VolleyCallback() {
+                        @Override
+                        public void onSuccess(JSONArray res) throws JSONException, ParseException {
+                            Log.d("SearchResult", "" + res);
+                            if (res == null) {
+                                TextView textView = view.findViewById(R.id.search_hint);
+                                textView.setText("No result found.");
+                                textView.setVisibility(View.VISIBLE);
+                                RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+                                recyclerView.setVisibility(View.GONE);
+                            }
+                            else if (res.length() == 0) {
+                                TextView textView = view.findViewById(R.id.search_hint);
+                                textView.setText("No result found.");
+                                textView.setVisibility(View.VISIBLE);
+                                RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+                                recyclerView.setVisibility(View.GONE);
+                            }
+                            else {
+                                int length = Math.min(20, res.length());
+                                for (int i = 0; i < length; i++) {
+                                    if (res.getJSONObject(i) != null) {
+                                        JSONObject obj = res.getJSONObject(i);
+                                        String id = obj.getString("id");
+
+                                        if (!obj.getString("backdrop_path").equals("null")) {
+                                            if (!obj.getString("backdrop_path").isEmpty() && !obj.getString("backdrop_path").equals("")) {
+                                                String backdrop_path = "https://image.tmdb.org/t/p/w500" + obj.getString("backdrop_path");
+                                                String type = obj.getString("type");
+                                                String year = obj.getString("year");
+                                                String title = obj.getString("title");
+                                                String rating = obj.getString("rating");
+                                                searchList.add(new SingleSearchResult(id, backdrop_path, type, year, title, rating));
+                                            }
+                                        }
+                                        else {
+                                            Log.d("search777", obj.getString("backdrop_path"));
+                                        }
+                                    }
+                                }
+                                RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                SearchResultAdapter adapter = new SearchResultAdapter(mContext, searchList);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                                recyclerView.setAdapter(adapter);
+
+                            }
+
+                        }
+                    }, mContext, newText);
+
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Search search = new Search();
-                ArrayList<SingleSearchResult> searchList = new ArrayList<>();
-                search.getSearchResults(new VolleyCallback() {
-                    @Override
-                    public void onSuccess(JSONArray res) throws JSONException, ParseException {
-                        Log.d("SearchResult", "" + res);
-                        if (res == null && res.length() == 0) {
-                            TextView textView = view.findViewById(R.id.search_hint);
-                            textView.setText("No result found.");
-                        }
-                        else {
-                            int length = Math.min(20, res.length());
-                            for (int i = 0; i < length; i++) {
-                                if (res.getJSONObject(i) != null) {
-                                    JSONObject obj = res.getJSONObject(i);
-                                    String id = obj.getString("id");
-                                    String backdrop_path = "https://image.tmdb.org/t/p/w500" + obj.getString("backdrop_path");
-                                    String type = obj.getString("type");
-                                    String year = obj.getString("year");
-                                    String title = obj.getString("title");
-                                    String rating = obj.getString("rating");
-                                    searchList.add(new SingleSearchResult(id, backdrop_path, type, year, title, rating));
-                                }
+                Log.d("query7777", "is " + newText);
+
+                if (newText.equals("") || newText == null) {
+                    TextView textView = view.findViewById(R.id.search_hint);
+                    textView.setVisibility(View.GONE);
+                    RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+                    recyclerView.setVisibility(View.GONE);
+                }
+                else {
+                    Search search = new Search();
+                    ArrayList<SingleSearchResult> searchList = new ArrayList<>();
+                    search.getSearchResults(new VolleyCallback() {
+                        @Override
+                        public void onSuccess(JSONArray res) throws JSONException, ParseException {
+                            Log.d("SearchResult", "" + res);
+                            if (res == null) {
+                                TextView textView = view.findViewById(R.id.search_hint);
+                                textView.setText("No result found.");
+                                textView.setVisibility(View.VISIBLE);
+                                RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+                                recyclerView.setVisibility(View.GONE);
                             }
-                            RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
-                            SearchResultAdapter adapter = new SearchResultAdapter(mContext, searchList);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-                            recyclerView.setAdapter(adapter);
+                            else if (res.length() == 0) {
+                                TextView textView = view.findViewById(R.id.search_hint);
+                                textView.setText("No result found.");
+                                textView.setVisibility(View.VISIBLE);
+                                RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+                                recyclerView.setVisibility(View.GONE);
+                            }
+                            else {
+                                int length = Math.min(20, res.length());
+                                for (int i = 0; i < length; i++) {
+                                    if (res.getJSONObject(i) != null) {
+                                        JSONObject obj = res.getJSONObject(i);
+                                        String id = obj.getString("id");
+
+                                        if (!obj.getString("backdrop_path").equals("null")) {
+                                            if (!obj.getString("backdrop_path").isEmpty() && !obj.getString("backdrop_path").equals("")) {
+                                                String backdrop_path = "https://image.tmdb.org/t/p/w500" + obj.getString("backdrop_path");
+                                                String type = obj.getString("type");
+                                                String year = obj.getString("year");
+                                                String title = obj.getString("title");
+                                                String rating = obj.getString("rating");
+                                                searchList.add(new SingleSearchResult(id, backdrop_path, type, year, title, rating));
+                                            }
+                                        }
+                                        else {
+                                            Log.d("search777", obj.getString("backdrop_path"));
+                                        }
+                                    }
+                                }
+                                RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                SearchResultAdapter adapter = new SearchResultAdapter(mContext, searchList);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                                recyclerView.setAdapter(adapter);
+
+                            }
 
                         }
+                    }, mContext, newText);
 
-                    }
-                }, mContext, newText);
-
+                }
                 return false;
             }
         });

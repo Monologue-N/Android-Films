@@ -27,9 +27,12 @@
         <item name="android:queryBackground">@android:color/transparent</item>
         <item name="android:submitBackground">@android:color/transparent</item>
 
+    </style>
 
-
-
+    <style name="Theme.USCFilms.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
+        <item name="colorPrimaryDark">@color/dark_blue</item>
     </style>
 
 <!--    <style name="Theme.USCFilms.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>-->

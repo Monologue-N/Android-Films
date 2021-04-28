@@ -4,51 +4,71 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@drawable/review_card"
-    android:outlineAmbientShadowColor="#2b495c"
-    >
+    android:id="@+id/review_card">
 
-    <TextView
-        android:id="@+id/review_creation"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView"
-        android:textColor="@color/lake_blue"/>
+        android:orientation="vertical"
+        android:background="@drawable/review_card"
+        android:outlineAmbientShadowColor="#2b495c">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/review_rating"
-            android:layout_width="30dp"
+            android:id="@+id/review_creation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView"
-            android:textColor="@color/white"/>
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/lake_blue"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/review_rating"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-condensed"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="&#9733;"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-condensed"
+                android:textStyle="bold"
+                android:textColor="#FFFF00"
+                android:layout_marginStart="24dp"/>
+
+
+        </RelativeLayout>
+
 
         <TextView
-            android:layout_width="30dp"
+            android:id="@+id/review_review"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="&#9733;"
-            android:textColor="#FFFF00"
-            android:layout_marginStart="22dp"/>
+            android:textColor="@color/white"
+            android:ellipsize="end"
+            android:maxLines="3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/full_review"/>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
-    <com.borjabravo.readmoretextview.ReadMoreTextView
-        android:id="@+id/review_review"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        app:trimMode="trimModeLine"
-        app:trimLines="4"
-        app:colorClickableText="@color/grey"
-        app:trimExpandedText="..." />
 
 </LinearLayout>
