@@ -233,7 +233,10 @@ public class DetailsActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(new GridLayoutManager(cxt, numberOfColumns));
                 recyclerView.setAdapter(adapter);
 
-                getReviews(cxt, id, type, activity);
+                View layout = findViewById(R.id.layout_view3);
+                layout.setVisibility(View.GONE);
+
+//                getReviews(cxt, id, type, activity);
 
             }
         }, cxt, id, type, "casts");
@@ -249,6 +252,7 @@ public class DetailsActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onSuccess(JSONObject resObj) throws JSONException, ParseException {
+                Log.d("reviews777", "" + resObj);
                 JSONArray res = resObj.getJSONArray("results");
                 if (res == null) {
                     TextView reviewsText = findViewById(R.id.reviews);
@@ -304,7 +308,7 @@ public class DetailsActivity extends AppCompatActivity {
                     recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.VERTICAL, false));
                     recyclerView.setAdapter(adapter);
 
-                    getRecommended(cxt, id, type, activity);
+//                    getRecommended(cxt, id, type, activity);
                 }
             }
         }, cxt, id, type, "reviews");
@@ -316,6 +320,7 @@ public class DetailsActivity extends AppCompatActivity {
         medias.getRecommended(new VolleyCallback() {
             @Override
             public void onSuccess(JSONArray res) throws JSONException, ParseException {
+                Log.d("Recommended777", ""+ res);
 
                 if (res == null) {
                     TextView recommendedText = findViewById(R.id.recommended);
@@ -353,9 +358,6 @@ public class DetailsActivity extends AppCompatActivity {
                     RecommendedAdapter adapter = new RecommendedAdapter(cxt, cardList, activity);
                     recyclerView.setLayoutManager(new LinearLayoutManager(cxt, LinearLayoutManager.HORIZONTAL, false));
                     recyclerView.setAdapter(adapter);
-
-                    View layout = findViewById(R.id.layout_view3);
-                    layout.setVisibility(View.GONE);
                 }
             }
         }, cxt, type, "recommended", id);
@@ -525,7 +527,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         getDetails(cxt, id, type, activity);
 //        getCast(cxt, id, type, activity);
-//        getRecommended(cxt, id, type, activity);
+        getReviews(cxt, id, type, activity);
+        getRecommended(cxt, id, type, activity);
 
     }
 

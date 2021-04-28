@@ -81,7 +81,21 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         reviewHolder.search_title.setText(finalSpannableString);
 
         reviewHolder.search_title.bringToFront();
-        reviewHolder.search_rating.setText(singleSearchResult.getRating());
+
+        String ratingString = singleSearchResult.getRating();
+
+        float num = Float.parseFloat(ratingString);
+
+        if (num == 0) {
+            ratingString = "0  ";
+        }
+        else if (num == Math.round(num)) {
+            ratingString += ".0";
+        }
+        
+        reviewHolder.search_rating.setText(ratingString);
+
+
         reviewHolder.search_rating.bringToFront();
 
     }
