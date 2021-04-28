@@ -42,28 +42,34 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="23dp"
             android:layout_marginTop="12dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/search_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/search_title"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="23dp"
             android:layout_marginTop="130dp"
-            android:textColor="@color/white" />
+            android:fontFamily="@sans-serif"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="&#9733;"
-            android:textColor="#FFFF00"
+            android:textColor="#FFD000"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:textSize="16sp"
             android:layout_marginEnd="33dp"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="12dp"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,7 +79,10 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="23dp"
             android:layout_marginTop="12dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/search_id"

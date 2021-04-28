@@ -137,23 +137,23 @@
 
                         <ImageView
                             android:id="@+id/addToWatchlist"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
                             android:src="@drawable/ic_baseline_add_circle_outline_24" />
 
                         <ImageView
                             android:id="@+id/fb"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="42dp"
                             app:srcCompat="@drawable/ic_baseline_facebook_24" />
 
 
                         <ImageView
                             android:id="@+id/twitter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="60dp"
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="84dp"
                             app:srcCompat="@drawable/ic_twitter_logo_dialog" />
 
 

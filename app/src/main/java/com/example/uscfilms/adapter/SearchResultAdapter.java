@@ -2,6 +2,10 @@ package com.example.uscfilms.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,11 +59,27 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         reviewHolder.search_img_mask.setBackground(Drawable.createFromPath("@drawable/gradient"));
         reviewHolder.search_img_mask.bringToFront();
 
-        String type_year = singleSearchResult.getType() + "(" + singleSearchResult.getYear() + ")";
+        String type_year = singleSearchResult.getType() + " (" + singleSearchResult.getYear() + ")";
 
         reviewHolder.search_type_year.setText(type_year);
         reviewHolder.search_type_year.bringToFront();
-        reviewHolder.search_title.setText(singleSearchResult.getTitle());
+
+        String str = singleSearchResult.getTitle();
+
+        String[] splited = str.split(" ");
+
+        SpannableStringBuilder finalSpannableString = new SpannableStringBuilder("");
+
+        for (String string : splited) {
+            //Change font size of the first character. You can change 2f as you want
+            SpannableString spannableString = new SpannableString(string);
+            spannableString.setSpan(new RelativeSizeSpan(1.3f), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            finalSpannableString.append(" ");
+            finalSpannableString.append(spannableString);
+        }
+
+        reviewHolder.search_title.setText(finalSpannableString);
+
         reviewHolder.search_title.bringToFront();
         reviewHolder.search_rating.setText(singleSearchResult.getRating());
         reviewHolder.search_rating.bringToFront();

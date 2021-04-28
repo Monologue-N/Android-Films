@@ -181,7 +181,7 @@ public class DetailsActivity extends AppCompatActivity {
                                 @Override
                                 public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                                     Log.d("youtubePlayer", "loading?");
-                                    youTubePlayer.loadVideo(key, 0);
+                                    youTubePlayer.cueVideo(key, 0);
                                     Log.d("youtubePlayer", "loaded?");
 
                                 }
