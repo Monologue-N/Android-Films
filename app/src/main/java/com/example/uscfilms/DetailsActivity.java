@@ -534,7 +534,9 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     public void goToFB(String id, String type) {
-        Log.d("tmdb", "I am here in fb");
+        Log.d("tmdb777", "I am here in fb");
+        Log.d("tmdb777", "id: " + id);
+        Log.d("tmdb777", "type: " + type);
         mContext = getApplicationContext();
 
         String fbURL = "https://www.facebook.com/sharer/sharer.php?u=" + "https://www.themoviedb.org/" + type + "/" + id ;
@@ -542,9 +544,11 @@ public class DetailsActivity extends AppCompatActivity {
         startActivity(i);
     }
     public void goToTwitter(String id, String type) {
-        Log.d("tmdb", "I am here in twitter");
+        Log.d("tmdb777", "I am here in twitter");
+        Log.d("tmdb777", "id: " + id);
+        Log.d("tmdb777", "type: " + type);
         String twitterURL = "https://twitter.com/intent/tweet?text=Check%20this%20out!%0D" + "https://www.themoviedb.org/" + type + "/" + id;
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.twitter.com"));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(twitterURL));
         startActivity(i);
     }
 
