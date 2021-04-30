@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("tmdb", "I am here in twitter");
         String twitterURL = "https://twitter.com/intent/tweet?text=Check%20this%20out!%0D" + "https://www.themoviedb.org/" + type + "/" + id;
 //        https://www.youtube.com/watch?v={{ key }}%0D%0A%23USC%20%23CSCI571%20%23FightOn";
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.twitter.com"));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(twitterURL));
         startActivity(i);
     }
 

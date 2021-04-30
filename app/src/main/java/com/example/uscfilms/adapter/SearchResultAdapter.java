@@ -92,7 +92,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         else if (num == Math.round(num)) {
             ratingString += ".0";
         }
-        
+
         reviewHolder.search_rating.setText(ratingString);
 
 
